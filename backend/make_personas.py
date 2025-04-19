@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Dict, List
 from models.llms import llm_call
+from models.images import generate_image
 
 class BasePersona(BaseModel):
     name: str
@@ -108,29 +109,58 @@ def generate_chat_system_prompt(persona: BasePersona) -> str:
         system_prompt=chat_system_prompt
     )
 
+def generate_persona_image(persona: BasePersona, model: str = "fal-ai/flux/schnell") -> str:
+    """
+    Generate an image for a given persona.
+    
+    Args:
+        persona (BasePersona): The persona to generate an image for
+        model (str): The model to use for image generation. Defaults to "fal-ai/flux/schnell"
+        
+    Returns:
+        str: URL of the generated image
+    """
+    # Clean any special characters from the persona fields
+    clean_name = ''.join(c for c in persona.name if ord(c) < 128)
+    clean_occupation = ''.join(c for c in persona.occupation if ord(c) < 128)
+    clean_income = ''.join(c for c in persona.income_level if ord(c) < 128)
+    clean_interests = [''.join(c for c in interest if ord(c) < 128) for interest in persona.interests]
+    
+    image_prompt = f"""
+    Create a realistic portrait of {clean_name}, a {persona.age}-year-old {clean_occupation.lower()}.
+    They should appear {clean_income.lower()} and have a personality that matches their interests: {', '.join(clean_interests)}.
+    The image should be professional and suitable for a marketing persona.
+    Make sure to accurately represent their demographic characteristics based on their name.
+    """
+    
+    image_url = generate_image(image_prompt, model="fal-ai/flux/schnell")
+    return image_url
+
 def generate_personas(campaign_description: str) -> PersonaList:
     """
-    Generate a list of personas with chat system prompts based on the campaign description.
+    Generate a list of personas with chat system prompts and images based on the campaign description.
     
     Args:
         campaign_description (str): Description of the ad campaign
         
     Returns:
-        PersonaList: List of generated personas with chat system prompts
+        PersonaList: List of generated personas with chat system prompts and images
     """
     # First generate base personas
     base_personas = generate_base_personas(campaign_description)
     
-    # Then create full personas with chat system prompts
+    # Then create full personas with chat system prompts and images
     personas = []
     for base_persona in base_personas.personas:
         chat_system_prompt = generate_chat_system_prompt(base_persona)
-        # Create a new Persona by extending the base persona with the chat system prompt
+        image_url = generate_persona_image(base_persona)
+        
+        # Create a new Persona by extending the base persona with the chat system prompt and image
         persona = Persona(
             **base_persona.model_dump(),
             chat_system_prompt=chat_system_prompt,
-            image_url="",  # Initialize with empty image URL
-            messages=[]    # Initialize with empty messages list
+            image_url=image_url,
+            messages=[]
         )
         personas.append(persona)
     

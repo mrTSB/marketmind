@@ -1,5 +1,6 @@
 # Custom
 test_results/
+.ruff_cache/
 
 # Python
 __pycache__/
