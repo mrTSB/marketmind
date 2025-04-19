@@ -20,8 +20,8 @@ const Navigation = () => {
     { name: 'Personas', path: '/personas' },
     { name: 'Market Research', path: '/market-research' },
     { name: 'Go To Market', path: '/gtm' },
+    { name: 'Executive Brief', path: '/executive-brief' },
     { name: 'Settings', path: '/settings' },
-
   ];
 
   return (
