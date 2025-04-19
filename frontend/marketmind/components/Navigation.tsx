@@ -19,7 +19,7 @@ const Navigation = () => {
     { name: 'Generate', path: '/generate' },
     { name: 'Personas', path: '/personas' },
     { name: 'Market Research', path: '/market-research' },
-    { name: 'Analytics', path: '/analytics' },
+    { name: 'Go To Market', path: '/gtm' },
     { name: 'Settings', path: '/settings' },
 
   ];
