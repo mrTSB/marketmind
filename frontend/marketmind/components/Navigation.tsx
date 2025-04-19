@@ -18,7 +18,7 @@ const Navigation = () => {
     { name: 'Home', path: '/' },
     { name: 'Generate', path: '/generate' },
     { name: 'Personas', path: '/personas' },
-    { name: 'Dashboard', path: '/dashboard' },
+    { name: 'Market Research', path: '/market-research' },
     { name: 'Analytics', path: '/analytics' },
     { name: 'Settings', path: '/settings' },
 
