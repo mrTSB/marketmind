@@ -20,7 +20,12 @@ export function MarketDemographics({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Market Demographics</CardTitle>
+        <CardTitle>
+          <div className="flex items-center gap-2">
+            <Users className="h-5 w-5 text-blue-500" />
+            Market Demographics
+          </div>
+        </CardTitle>
         <CardDescription>
           Key demographic segments in the market
         </CardDescription>

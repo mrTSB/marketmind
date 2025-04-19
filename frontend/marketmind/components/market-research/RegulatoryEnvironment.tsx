@@ -1,7 +1,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { AlertTriangle, CheckCircle, Clock } from "lucide-react"
+import { 
+  Scale, 
+  AlertTriangle, 
+  CheckCircle2, 
+  Clock, 
+  Shield, 
+  AlertCircle,
+  FileText,
+  Building,
+  ArrowRight
+} from "lucide-react"
 
 interface RegulatoryEnvironmentProps {
   current_regulations: string[]
@@ -21,49 +30,70 @@ export function RegulatoryEnvironment({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Regulatory Environment</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Scale className="h-5 w-5 text-blue-500" />
+          Regulatory Environment
+        </CardTitle>
         <CardDescription>
-          Current and pending regulations, compliance requirements, and potential risks
+          Current and pending regulations affecting the market
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div>
-              <h3 className="font-semibold mb-2">Current Regulations</h3>
-              <ul className="list-disc list-inside space-y-1">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                <h3 className="font-medium">Current Regulations</h3>
+              </div>
+              <div className="space-y-2 pl-6">
                 {current_regulations.map((regulation, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">
-                    {regulation}
-                  </li>
+                  <div key={index} className="flex items-start gap-2">
+                    <FileText className="h-3.5 w-3.5 text-green-500 mt-0.5" />
+                    <span className="text-sm">{regulation}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
+            
             <div>
-              <h3 className="font-semibold mb-2">Compliance Requirements</h3>
-              <ul className="list-disc list-inside space-y-1">
-                {compliance_requirements.map((requirement, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">
-                    {requirement}
-                  </li>
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="h-4 w-4 text-amber-500" />
+                <h3 className="font-medium">Pending Regulations</h3>
+              </div>
+              <div className="space-y-2 pl-6">
+                {pending_regulations.map((regulation, index) => (
+                  <div key={index} className="flex items-start gap-2">
+                    <AlertCircle className="h-3.5 w-3.5 text-amber-500 mt-0.5" />
+                    <span className="text-sm">{regulation}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
+          
           <div className="space-y-4">
             <div>
-              <h3 className="font-semibold mb-2">Pending Regulations</h3>
-              <ul className="list-disc list-inside space-y-1">
-                {pending_regulations.map((regulation, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">
-                    {regulation}
-                  </li>
+              <div className="flex items-center gap-2 mb-2">
+                <Shield className="h-4 w-4 text-blue-500" />
+                <h3 className="font-medium">Compliance Requirements</h3>
+              </div>
+              <div className="space-y-2 pl-6">
+                {compliance_requirements.map((requirement, index) => (
+                  <div key={index} className="flex items-start gap-2">
+                    <ArrowRight className="h-3.5 w-3.5 text-blue-500 mt-0.5" />
+                    <span className="text-sm">{requirement}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
+            
             <div>
-              <h3 className="font-semibold mb-2">Regulatory Bodies</h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex items-center gap-2 mb-2">
+                <Building className="h-4 w-4 text-purple-500" />
+                <h3 className="font-medium">Regulatory Bodies</h3>
+              </div>
+              <div className="flex flex-wrap gap-2 pl-6">
                 {regulatory_bodies.map((body, index) => (
                   <Badge key={index} variant="outline" className="text-sm">
                     {body}
@@ -74,19 +104,20 @@ export function RegulatoryEnvironment({
           </div>
         </div>
         
-        {potential_risks.length > 0 && (
-          <Alert variant="destructive" className="mt-6">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Potential Regulatory Risks</AlertTitle>
-            <AlertDescription>
-              <ul className="list-disc list-inside space-y-1 mt-2">
-                {potential_risks.map((risk, index) => (
-                  <li key={index}>{risk}</li>
-                ))}
-              </ul>
-            </AlertDescription>
-          </Alert>
-        )}
+        <div className="bg-red-50 p-4 rounded-lg">
+          <div className="flex items-center gap-2 mb-2">
+            <AlertTriangle className="h-4 w-4 text-red-500" />
+            <h3 className="font-medium">Potential Risks</h3>
+          </div>
+          <div className="space-y-2 pl-6">
+            {potential_risks.map((risk, index) => (
+              <div key={index} className="flex items-start gap-2">
+                <AlertTriangle className="h-3.5 w-3.5 text-red-500 mt-0.5" />
+                <span className="text-sm">{risk}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

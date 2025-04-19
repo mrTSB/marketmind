@@ -104,7 +104,7 @@ export function Competitor({
               <CheckCircle2 className="h-4 w-4 text-green-500" />
               <h3 className="font-medium">Strengths</h3>
             </div>
-            <ul className="space-y-1">
+            <ul className="space-y-2">
               {strengths.map((strength, index) => (
                 <li key={index} className="flex items-start gap-2 text-sm">
                   <TrendingUp className="h-3.5 w-3.5 text-green-500 mt-0.5" />

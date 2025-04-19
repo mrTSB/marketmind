@@ -20,7 +20,12 @@ export function MarketTrends({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Market Trends</CardTitle>
+        <CardTitle>
+          <div className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-blue-500" />
+            Market Trends
+          </div>
+        </CardTitle>
         <CardDescription>
           Current, emerging, and declining trends in the market
         </CardDescription>
