@@ -60,6 +60,7 @@ class MarketInfluencers(BaseModel):
     social_media_influencers: List[str]
 
 class MarketResearch(BaseModel):
+    title: str
     competitors: List[Competitor]
     market_size: MarketSize
     demographics: MarketDemographics
@@ -288,6 +289,24 @@ def conduct_market_research(product_description: str, company_description: str) 
     Returns:
         MarketResearch: Comprehensive market research data
     """
+    # Generate a title based on the product description
+    title_prompt = f"""
+    Based on the following product description, create a concise and descriptive title for the market research:
+    
+    Product Description:
+    {product_description}
+    
+    Create a title that captures the essence of the market being researched.
+    """
+    
+    system_prompt = """You are a market research expert specializing in creating clear and descriptive titles.
+    Create a concise title that accurately represents the market being researched."""
+    
+    title = llm_call(
+        prompt=title_prompt,
+        system_prompt=system_prompt
+    )
+    
     competitors = research_competitors(product_description, company_description)
     market_size = research_market_size(product_description)
     demographics = research_demographics(product_description)
@@ -322,6 +341,7 @@ def conduct_market_research(product_description: str, company_description: str) 
     )
     
     return MarketResearch(
+        title=title,
         competitors=competitors,
         market_size=market_size,
         demographics=demographics,
