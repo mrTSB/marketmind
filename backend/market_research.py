@@ -73,7 +73,7 @@ class MarketResearch(BaseModel):
 def research_competitors(product_description: str, company_description: str) -> List[Competitor]:
     prompt = f"""
     Based on the following product and company descriptions, identify and analyze key competitors (both current and past).
-    For each competitor, provide detailed information following this exact structure:
+    For each competitor, provide concise information, where each idea is in as few words as possible following this exact structure:
     
     For each competitor, provide:
     - name: The company name
@@ -97,7 +97,7 @@ def research_competitors(product_description: str, company_description: str) -> 
     """
     
     system_prompt = """You are a market research expert specializing in competitive analysis.
-    Provide detailed, accurate, and well-structured information about competitors in the market.
+    Provide concise, accurate, and well-structured information about competitors in the market.
     Always include all required fields for each competitor, even if some information needs to be estimated.
     If market share is unknown, provide a reasonable estimate based on available information.
     For defunct competitors, provide detailed reasons for their failure."""
@@ -111,7 +111,7 @@ def research_competitors(product_description: str, company_description: str) -> 
 
 def research_market_size(product_description: str) -> MarketSize:
     prompt = f"""
-    Analyze the market size and growth potential for the following product, providing information following this exact structure:
+    Analyze the market size and growth potential for the following product, providing concise information following this exact structure:
     
     Required fields:
     - total_market_value: The current total market value in the specified unit
@@ -124,11 +124,11 @@ def research_market_size(product_description: str) -> MarketSize:
     Product Description:
     {product_description}
     
-    Provide realistic and well-researched market size data and growth projections.
+    Provide realistic and well-researched market size data and growth projections. Ensure you are concise and use as few words as possible to convey ideas.
     """
     
     system_prompt = """You are a market research expert specializing in market sizing and growth analysis.
-    Provide accurate market size data and realistic growth projections.
+    Provide concise and accurate market size data and realistic growth projections.
     Ensure all required fields are filled with meaningful data.
     Use current year for the market value and project 5 years into the future for projections."""
     
@@ -140,7 +140,7 @@ def research_market_size(product_description: str) -> MarketSize:
 
 def research_demographics(product_description: str) -> MarketDemographics:
     prompt = f"""
-    Analyze the target demographics for the following product, providing information following this exact structure:
+    Analyze the target demographics for the following product, providing concise information following this exact structure:
     
     Required fields:
     - age_groups: List of target age groups (e.g., ["18-24", "25-34", "35-44"])
@@ -152,7 +152,7 @@ def research_demographics(product_description: str) -> MarketDemographics:
     Product Description:
     {product_description}
     
-    Provide comprehensive demographic information about the target market.
+    Provide comprehensive demographic information about the target market. Ensure you are concise and use as few words as possible to convey ideas.
     """
     
     system_prompt = """You are a market research expert specializing in demographic analysis.
@@ -168,7 +168,7 @@ def research_demographics(product_description: str) -> MarketDemographics:
 
 def research_regulatory_environment(product_description: str) -> RegulatoryEnvironment:
     prompt = f"""
-    Analyze the regulatory environment for the following product, providing information following this exact structure:
+    Analyze the regulatory environment for the following product, providing concise information following this exact structure:
     
     Required fields:
     - current_regulations: List of current regulations affecting the product
@@ -180,12 +180,12 @@ def research_regulatory_environment(product_description: str) -> RegulatoryEnvir
     Product Description:
     {product_description}
     
-    Include comprehensive information about the regulatory landscape and compliance requirements.
+    Include comprehensive information about the regulatory landscape and compliance requirements. Ensure you are concise and use as few words as possible to convey ideas.
     """
     
     system_prompt = """You are a market research expert specializing in regulatory analysis.
-    Provide comprehensive information about the regulatory landscape and compliance requirements.
-    Ensure all lists contain specific, actionable information.
+    Provide comprehensive and concise information about the regulatory landscape and compliance requirements.
+    Ensure all lists contain specific, concise, and actionable information.
     Include both general and product-specific regulations where applicable."""
     
     return llm_call(
@@ -196,7 +196,7 @@ def research_regulatory_environment(product_description: str) -> RegulatoryEnvir
 
 def research_trends(product_description: str) -> MarketTrends:
     prompt = f"""
-    Analyze current and emerging trends relevant to the following product, providing information following this exact structure:
+    Analyze current and emerging trends relevant to the following product, providing concise information following this exact structure:
     
     Required fields:
     - current_trends: List of current market trends
@@ -208,12 +208,12 @@ def research_trends(product_description: str) -> MarketTrends:
     Product Description:
     {product_description}
     
-    Include comprehensive information about market trends and their implications.
+    Include comprehensive information about market trends and their implications. Ensure you are concise and use as few words as possible to convey ideas.
     """
     
     system_prompt = """You are a market research expert specializing in trend analysis.
-    Provide comprehensive information about market trends and their implications.
-    Ensure all lists contain specific, actionable trends.
+    Provide comprehensive, concise information about market trends and their implications.
+    Ensure all lists contain specific, concise, and actionable trends.
     Include both short-term and long-term trends where applicable."""
     
     return llm_call(
@@ -236,12 +236,12 @@ def research_pain_points(product_description: str) -> PainPoints:
     Product Description:
     {product_description}
     
-    Include comprehensive information about market pain points and solution gaps.
+    Include comprehensive information about market pain points and solution gaps. Ensure you are concise and use as few words as possible to convey ideas.
     """
     
     system_prompt = """You are a market research expert specializing in problem analysis.
-    Provide comprehensive information about market pain points and solution gaps.
-    Ensure all lists contain specific, actionable problems and solutions.
+    Provide comprehensive, concise information about market pain points and solution gaps.
+    Ensure all lists contain specific, concise, and actionable problems and solutions.
     Focus on both immediate and systemic issues."""
     
     return llm_call(
@@ -264,12 +264,12 @@ def research_influencers(product_description: str) -> MarketInfluencers:
     Product Description:
     {product_description}
     
-    Include comprehensive information about market influencers and their impact.
+    Include comprehensive information about market influencers and their impact. Ensure you are concise and use as few words as possible to convey ideas.
     """
     
     system_prompt = """You are a market research expert specializing in influencer analysis.
-    Provide comprehensive information about market influencers and their impact.
-    Ensure all lists contain specific, relevant influencers and outlets.
+    Provide comprehensive, concise information about market influencers and their impact.
+    Ensure all lists contain specific, concise, and relevant influencers and outlets.
     Include both traditional and digital influencers where applicable."""
     
     return llm_call(

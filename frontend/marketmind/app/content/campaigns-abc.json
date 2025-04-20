@@ -1,44 +1,44 @@
 {
   "campaigns": [
     {
-      "name": "Roots Across Borders",
-      "slogan": "Discover the stories that bind us",
-      "concept": "A visual journey showcasing the diverse experiences of Indians in America through intimate interviews and powerful storytelling, highlighting their cultural heritage and integration.",
-      "target_audience": "Documentary enthusiasts, culturally curious viewers ages 25-45",
-      "key_message": "Indian Americans contribute richly to the fabric of America while preserving their unique heritage.",
-      "image_url": "https://v3.fal.media/files/lion/v6Mo5zX57ODPZ8ZsZv3y-.png"
+      "name": "Roots & Realities",
+      "slogan": "Discover the stories that bridge two worlds.",
+      "concept": "Highlighting personal narratives of Indian Americans, this campaign uses intimate interviews and immersive storytelling to showcase the cultural fusion, challenges, and triumphs of living between two identities.",
+      "target_audience": "Young adults and adults interested in multicultural stories and identity exploration.",
+      "key_message": "Experience the heartfelt journeys of Indian Americans navigating heritage and modern life.",
+      "image_url": "https://v3.fal.media/files/koala/F2UfRi9UsBjkdlghp1ips.png"
     },
     {
-      "name": "Beyond the Diaspora",
-      "slogan": "More than a story, a shared journey",
-      "concept": "An interactive campaign with social media storytelling and audience participation inviting Indian Americans to share their personal stories, complemented by teaser clips from the documentary.",
-      "target_audience": "Young Indian Americans and multicultural audiences active on social media",
-      "key_message": "Every Indian American story adds a unique thread to the larger tapestry of America’s diversity.",
-      "image_url": "https://v3.fal.media/files/lion/7GMNFO0XEi7TwThj3J8ic.png"
+      "name": "Crossing Cultures",
+      "slogan": "Where tradition meets tomorrow.",
+      "concept": "A visually vibrant campaign using dynamic visuals and street-style interviews demonstrating how Indian traditions are evolving within the American landscape, emphasizing innovation and cultural exchange.",
+      "target_audience": "Millennials and Gen Z who are culturally curious and socially conscious.",
+      "key_message": "See how Indian American communities blend heritage with contemporary life to create something new.",
+      "image_url": "https://v3.fal.media/files/lion/Ee0VKEYIq7crRJLljI-cM.png"
     },
     {
-      "name": "Faces of Fusion",
-      "slogan": "Tradition meets tomorrow",
-      "concept": "A multimedia art and documentary campaign featuring profiles of Indian Americans blending tradition with modern American life, highlighting achievements in art, technology, and community.",
-      "target_audience": "Urban professionals, multicultural creatives, ages 30-50",
-      "key_message": "Indian Americans are shaping the future by merging heritage and innovation.",
-      "image_url": "https://v3.fal.media/files/monkey/MIi8IwjI1DSeARwvRo6C1.png"
+      "name": "Voices Unveiled",
+      "slogan": "Every voice tells a story worth hearing.",
+      "concept": "Focusing on the diverse voices within the Indian American community, this campaign features podcast snippets, social media takeovers, and short clips that reveal personal experiences ranging from identity struggles to achievements.",
+      "target_audience": "Podcast listeners, social media users, and documentary enthusiasts who value authentic storytelling.",
+      "key_message": "Behind every face is a unique story that defines the Indian American experience.",
+      "image_url": "https://v3.fal.media/files/lion/g7lv4bXhdlw6Ze6rf0coy.png"
     },
     {
-      "name": "The American Desi Experience",
-      "slogan": "Where heritage feels at home",
-      "concept": "A nostalgic and heartfelt campaign focusing on the challenges and triumphs of Indian immigrants across generations in America, emphasizing family, identity, and belonging.",
-      "target_audience": "First and second generation Indian Americans, and families interested in immigrant stories",
-      "key_message": "Celebrating the resilience and identity of Indian Americans making America their home.",
-      "image_url": "https://v3.fal.media/files/koala/HWlqvRRwVyZYJqPjO1SOy.png"
+      "name": "Heritage in Motion",
+      "slogan": "The journey of a legacy, moving forward.",
+      "concept": "An artistic and cinematic campaign showcasing traditional Indian cultural elements woven into contemporary American settings through dance, music, and art, reflecting the dynamism of Indian American identity.",
+      "target_audience": "Art lovers, cultural community members, and those interested in heritage preservation and innovation.",
+      "key_message": "Celebrate how Indian heritage lives and evolves within the American dream.",
+      "image_url": "https://v3.fal.media/files/penguin/1nbDiwCzqupc59a8QcC51.png"
     },
     {
-      "name": "Bridging Worlds",
-      "slogan": "Uniting cultures, inspiring futures",
-      "concept": "An educational and inspiring campaign partnering with schools and cultural institutions to screen the documentary with accompanying discussions about cultural diversity and integration.",
-      "target_audience": "Educators, students, cultural organizations, and community leaders",
-      "key_message": "Understanding the Indian American experience fosters empathy and builds stronger communities.",
-      "image_url": "https://v3.fal.media/files/monkey/z6VlRXa3X8kIca8Mjy4Yt.png"
+      "name": "Bridging Generations",
+      "slogan": "Connecting past and present, shaping the future.",
+      "concept": "Featuring multi-generational stories from Indian American families, this campaign highlights dialogues between elders and youth, focusing on values, challenges, and dreams, fostering empathy and understanding.",
+      "target_audience": "Families, educators, and community groups focused on cultural identity and intergenerational connections.",
+      "key_message": "Unity in diversity: Indian American families share their journey across generations.",
+      "image_url": "https://v3.fal.media/files/lion/3bqpq0bd2nc_hwQsZ6EkZ.png"
     }
   ]
 }
