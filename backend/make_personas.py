@@ -79,35 +79,61 @@ def generate_chat_system_prompt(persona: BasePersona) -> str:
         str: The generated chat system prompt
     """
     chat_prompt = f"""
-    Create a detailed system prompt for chatting with the following persona:
-    
+    Create a system prompt for a realistic conversation with this consumer persona:
+
+    PERSONA:
     Name: {persona.name}
     Age: {persona.age}
     Occupation: {persona.occupation}
-    Income Level: {persona.income_level}
+    Income: {persona.income_level}
     Interests: {', '.join(persona.interests)}
     Pain Points: {', '.join(persona.pain_points)}
     Goals: {', '.join(persona.goals)}
     Preferred Channels: {', '.join(persona.preferred_channels)}
     Buying Behavior: {persona.buying_behavior}
     Brand Preferences: {', '.join(persona.brand_preferences)}
-    
-    The system prompt should:
-    - Capture their personality and communication style
-    - Include their background and interests
-    - Reflect their values and preferences
-    - Guide how they would respond to questions about the campaign
-    - Be written in second person (e.g., "You are...")
+
+    CONVERSATION STYLE:
+    - Match speech patterns to demographic (age, occupation, income)
+    - Use appropriate vocabulary, slang, and references
+    - Keep responses brief (1-3 sentences)
+    - Show personality through tone and word choice
+    - Express brand preferences naturally when relevant
+    - Never volunteer excessive information unprompted
+    - Always respond in first person ("I like", "I need")
+    - Don't ask follow-up questions
+    - Never acknowledge being a simulation
+
+    The persona should reveal details about their interests, pain points, and preferences only when directly asked, maintaining realistic human conversation patterns throughout.
+    """
+
+    chat_system_prompt = """Design a system prompt for a realistic consumer persona that:
+    - Creates authentic speech patterns matching the demographic profile
+    - Controls information disclosure (only reveals details when asked)
+    - Maintains consistent personality traits and brand preferences
+    - Limits responses to brief, natural conversation
+    - Avoids AI-like behaviors (excessive helpfulness, question-asking)
+    - Produces interactions that feel like chatting with a real consumer"""
+
+    response_guidelines = """
+    IMPLEMENTATION RULES:
+    1. RESPONSES: Brief (1-3 sentences), match vocabulary to demographic, include occasional filler words
+    2. INFORMATION: Only share personal details when asked, reveal preferences gradually
+    3. BOUNDARIES: Never initiate topics, rarely ask questions, avoid being overly helpful
+    4. LIMITATIONS: Show uncertainty on unfamiliar topics, express authentic emotions
+    5. PERSPECTIVE: Maintain self-interest rather than accommodating the user
+
+    The persona represents a specific consumer, not an assistant. Responses should mirror how this real person would naturally communicate.
     """
     
-    chat_system_prompt = """You are an expert at creating detailed system prompts for AI personas.
-    Create a comprehensive system prompt that captures the persona's unique characteristics
-    and would guide an AI in simulating conversations with them."""
-    
-    return llm_call(
+    response = llm_call(
         prompt=chat_prompt,
         system_prompt=chat_system_prompt
     )
+
+    response += response_guidelines
+
+    return response
 
 def generate_persona_image(persona: BasePersona, model: str = "fal-ai/flux/schnell") -> str:
     """
@@ -162,8 +188,8 @@ def generate_personas(campaign_description: str) -> PersonaList:
             image_url=image_url,
             messages=[
                 {
-                    "role": base_persona.name,
-                    "content": "Hey there! How can I help?"
+                    "role": "assistant",
+                    "content": f"Hi! I'm {base_persona.name}. How's it going?"
                 },
             ]
         )

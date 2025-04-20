@@ -60,6 +60,21 @@ export interface AllContent {
   executiveBrief: ExecutiveBrief;
 }
 
+export interface ChatMessage {
+  role: string;
+  content: string;
+}
+
+export interface ChatRequest {
+  content_id: string;
+  persona_name: string;
+  messages: ChatMessage[];
+}
+
+export interface ChatResponse {
+  response: string;
+}
+
 // API Functions
 export const generateContent = async (productInfo: ProductInfo): Promise<string> => {
   try {
@@ -180,6 +195,27 @@ export const getDebugContent = async (): Promise<any> => {
     return response.data;
   } catch (error) {
     console.error('Error fetching debug content:', error);
+    throw error;
+  }
+};
+
+// Chat function
+export const chatWithPersona = async (
+  contentId: string,
+  personaName: string,
+  messages: ChatMessage[]
+): Promise<string> => {
+  try {
+    const chatRequest: ChatRequest = {
+      content_id: contentId,
+      persona_name: personaName,
+      messages: messages
+    };
+    
+    const response = await axios.post(`${BASE_URL}/chat`, chatRequest);
+    return response.data.response;
+  } catch (error) {
+    console.error('Error chatting with persona:', error);
     throw error;
   }
 };
