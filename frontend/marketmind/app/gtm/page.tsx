@@ -1,8 +1,12 @@
+"use client"
+
 import { GTMPlan } from "@/components/gtm/GTMPlan"
+import { QuickLoadingModal } from "@/components/QuickLoadingModal";
+import { useEffect, useState } from "react";
 
 export default function GTMPlanPage() {
   // This would typically come from an API or database
-  const gtmPlanData = {
+  const [gtmPlanData, setGTMPlanData] = useState({
     "title": "FutureProof Marketing Campaign",
     "subtitle": "A six-month campaign to position MarketMind's AI platform as the premier solution for mid to large-sized enterprises seeking to future-proof their marketing strategies.",
     "executive_summary": "FutureProof Marketing is a targeted six-month campaign aimed at positioning MarketMind's AI platform as the premier solution for mid to large-sized enterprises seeking to future-proof their marketing strategies. The campaign focuses on increasing brand awareness by 40%, generating 150 qualified leads, and converting 25% of those leads into trial users by leveraging a mix of digital ads, webinars, content marketing, and strategic partnerships. The phased approach ensures sustained engagement and measurable progress, establishing MarketMind as a thought leader in AI-powered marketing.",
@@ -39,6 +43,36 @@ export default function GTMPlanPage() {
     ],
     "risk_and_resources": "Potential risks include underperforming digital ads, webinar attendance below targets, and slow lead conversion rates. To mitigate, rigorous A/B testing of ad creatives and messaging will be conducted with rapid iteration. Resources wise, dedicated campaign management, content creation teams, technical support for platform trials, and sales enablement staff are required. Collaboration with partnerships needs formal agreements and assigned liaisons. Budget allocation will prioritize channels with high ROI and flexible reallocation based on performance data.",
     "growth_strategy": "Post-campaign growth will focus on solidifying partnerships with marketing associations and enterprise tech forums for co-marketing and referral programs. Acquisition efforts will leverage testimonials, case studies, and trial success stories for expanded outreach. Retention strategies include continuous customer education via webinars, personalized support, and feature upgrades. Scalability is planned through integration with popular enterprise systems and continuous AI model enhancement to maintain competitive advantage and broaden product applicability across industries."
+  });
+
+  const [isLoading, setIsLoading] = useState(true)
+
+  const loadGTMPlan = async () => {
+    const memeContentId = "abc";
+
+    if (!memeContentId) return;
+      
+    try {
+      const response = await fetch(`/api/load-content?contentId=${memeContentId}&contentType=gtm-plan`);
+      if (!response.ok) {
+        throw new Error('Failed to load gtm plan');
+      }
+      const data = await response.json();
+      console.log(data);
+      setGTMPlanData(data);
+    } catch (error) {
+      console.error('Error loading gtm plan:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadGTMPlan();
+  }, []);
+
+  if (isLoading) {
+    return <QuickLoadingModal message="Loading gtm plan..." />;
   }
 
   return (
