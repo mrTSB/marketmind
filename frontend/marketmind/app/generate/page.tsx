@@ -8,6 +8,11 @@ import { generateContent, getCampaigns, getMarketResearch, getPersonas, getExecu
 import { LoadingModal } from '@/components/LoadingModal';
 import { ContentIdContext } from "@/app/providers/content_id_provider";
 import { useRouter } from 'next/navigation';
+import { TextHoverEffect } from '@/components/ui/text-hover-effect';
+import { BorderBeam } from '@/components/magicui/border-beam';
+import { DotPattern } from '@/components/magicui/dot-pattern';
+import { cn } from '@/lib/utils';
+import { Ripple } from '@/components/magicui/ripple';
 export default function GeneratePage() {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -28,10 +33,10 @@ export default function GeneratePage() {
   }, [contentId, setContentId]);
 
   const exampleQueries = [
-    "What were the top performing sectors last quarter?",
-    "Analyze the market sentiment for tech stocks",
-    "Show me emerging trends in renewable energy",
-    "Compare Tesla and Ford's performance"
+    "Analyze market potential for our AI-powered CRM",
+    "Research competitors in the fintech space",
+    "Evaluate market size for sustainable packaging",
+    "Identify opportunities in healthcare tech"
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -173,23 +178,30 @@ export default function GeneratePage() {
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 py-12">
-      <LoadingModal isOpen={isLoading} message={loadingMessage} />
+      {/* <div className="absolute left-0 top-0 h-full w-full overflow-hidden -z-10 opacity-30">
+        <DotPattern 
+          className={cn(
+            "[mask-image:radial-gradient(1000px_circle_at_center,white,transparent)]",
+          )}
+        />
+      </div> */}
       <div className="w-full max-w-4xl space-y-8">
         <div className="space-y-4 text-center">
+          {/* <TextHoverEffect text="MarketMind"/> */}
           <h1 className="text-5xl pb-2 font-bold tracking-tight bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
-            Ready when you are.
+            Find your product-market fit
           </h1>
           <p className="text-lg text-muted-foreground">
-            Ask anything about your market data and get instant insights.
+            Our agents will find detailed market research, competitive analysis, and strategic insights for your product
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="relative group">
+          <div className="relative group rounded-full bg-background">
             <Input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask anything"
+            onChange={(e) => setQuery(e.target.value)}
+              placeholder="What are you building?"
               className="w-full px-6 py-8 text-xl rounded-full hover:border-primary/30 focus:border-primary/50 transition-all duration-300 pr-16 placeholder:text-muted-foreground/50"
               disabled={isLoading}
             />
@@ -202,6 +214,7 @@ export default function GeneratePage() {
               <SendHorizontal className="w-6 h-6" />
               <span className="sr-only">Submit</span>
             </Button>
+            <BorderBeam duration={20} size={100} />
           </div>
         </form>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 px-1">
@@ -219,6 +232,8 @@ export default function GeneratePage() {
             </button>
           ))}
         </div>
+        <Ripple className="w-full h-full -z-10" />
+
       </div>
     </div>
   );
