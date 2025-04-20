@@ -241,5 +241,19 @@ async def group_chat(chat_request: GroupChatRequest):
     
     return GroupChatResponse(responses=responses)
 
+class HeatmapRequest(BaseModel):
+    image_url: str
+    description: str
+
+class HeatmapResponse(BaseModel):
+    base64_heatmap: str
+
+@app.post("/generate-heatmap", response_model=HeatmapResponse)
+async def generate_heatmap(heatmap_request: HeatmapRequest):
+    """Generate a heatmap for a given image and description"""
+    base64_heatmap = generate_heatmap(heatmap_request.image_url, heatmap_request.description)
+    return HeatmapResponse(base64_heatmap=base64_heatmap)   
+
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
