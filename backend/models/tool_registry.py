@@ -1,6 +1,11 @@
-from typing import Dict, Optional
-from models.tools import Tool
+import os
+from typing import Dict, Optional, Any
 
+from models.tools import Tool
+from exa_py import Exa
+from dotenv import load_dotenv
+from pydantic import BaseModel
+load_dotenv()
 
 class ToolRegistry:
     def __init__(self) -> None:
@@ -36,3 +41,21 @@ class ToolRegistry:
 
 # Global registry instance
 tool_registry = ToolRegistry()
+
+exa = Exa(api_key=os.getenv("EXA_API_KEY"))
+
+def exa_search(query: str) -> str:
+    search_results = exa.search_and_contents(query=query, type='auto', highlights=True)
+    return str(search_results)
+
+class SearchArgumentSchema(BaseModel):
+    query: str
+
+exa_tool = Tool(
+    name="web_search",
+    description="Perform a search query on the web, and retrieve the most relevant URLs/web data.",
+    function=exa_search,
+    argument_schema=SearchArgumentSchema
+)
+
+tool_registry.register(exa_tool)

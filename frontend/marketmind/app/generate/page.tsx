@@ -1,18 +1,23 @@
 'use client';
 
 import { useState, useEffect, useContext } from 'react';
-import { SendHorizontal } from 'lucide-react';
+import { SendHorizontal, Droplet, ChefHat, ShoppingBag, Brain } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { generateContent, getCampaigns, getMarketResearch, getPersonas, getExecutiveBrief, getGTMPlan } from '@/app/communicator';
 import { LoadingModal } from '@/components/LoadingModal';
 import { ContentIdContext } from "@/app/providers/content_id_provider";
-
+import { useRouter } from 'next/navigation';
+import { TextHoverEffect } from '@/components/ui/text-hover-effect';
+import { BorderBeam } from '@/components/magicui/border-beam';
+import { DotPattern } from '@/components/magicui/dot-pattern';
+import { cn } from '@/lib/utils';
+import { Ripple } from '@/components/magicui/ripple';
 export default function GeneratePage() {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
-
+  const router = useRouter();
   const ctx = useContext(ContentIdContext);
   if (!ctx) throw new Error("ContentIdContext missing");
   const { contentId, setContentId } = ctx;
@@ -28,10 +33,22 @@ export default function GeneratePage() {
   }, [contentId, setContentId]);
 
   const exampleQueries = [
-    "What were the top performing sectors last quarter?",
-    "Analyze the market sentiment for tech stocks",
-    "Show me emerging trends in renewable energy",
-    "Compare Tesla and Ford's performance"
+    {
+      text: "A smart water bottle that tracks hydration",
+      icon: Droplet
+    },
+    {
+      text: "An AI-powered personal chef",
+      icon: ChefHat
+    },
+    {
+      text: "A sustainable fashion marketplace",
+      icon: ShoppingBag
+    },
+    {
+      text: "A mental health app that uses voice analysis",
+      icon: Brain
+    }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,17 +57,16 @@ export default function GeneratePage() {
     setLoadingMessage('Preparing your request...');
 
     try {
-      setLoadingMessage('Analyzing your product information...');
+      setLoadingMessage('Generating content...');
       const productInfo = {
         product_info: query,
         company_info: "The company information should be in Product Info"
       };
       
-      setLoadingMessage('Generating content...');
       const newContentId = await generateContent(productInfo);
+      setContentId(newContentId);
 
       // Clear existing content first
-      setLoadingMessage('Clearing existing content...');
       const clearResponse = await fetch('/api/clear-content', {
         method: 'POST',
       });
@@ -59,10 +75,6 @@ export default function GeneratePage() {
         throw new Error('Failed to clear existing content');
       }
       
-      setLoadingMessage('Saving your content...');
-      setContentId(newContentId);
-      
-      setLoadingMessage('Loading Campaigns...');
       const campaigns = await getCampaigns(newContentId);
       console.log(campaigns);
       
@@ -84,7 +96,6 @@ export default function GeneratePage() {
         console.error('Failed to save campaigns');
       }
       
-      setLoadingMessage('Loading Personas...');
       const personas = await getPersonas(newContentId);
       console.log(personas);
       
@@ -106,7 +117,6 @@ export default function GeneratePage() {
         console.error('Failed to save personas');
       }
       
-      setLoadingMessage('Loading Market Research...');
       const marketResearch = await getMarketResearch(newContentId);
       console.log(marketResearch);
       
@@ -128,7 +138,6 @@ export default function GeneratePage() {
         console.error('Failed to save market research');
       }
       
-      setLoadingMessage('Loading Executive Brief...');
       const executiveBrief = await getExecutiveBrief(newContentId);
       console.log(executiveBrief);
       
@@ -150,7 +159,6 @@ export default function GeneratePage() {
         console.error('Failed to save executive brief');
       }
       
-      setLoadingMessage('Loading GTM Plan...');
       const gtmPlan = await getGTMPlan(newContentId);
       console.log(gtmPlan);
       
@@ -171,40 +179,41 @@ export default function GeneratePage() {
       if (!gtmPlanResponse.ok) {
         console.error('Failed to save GTM plan');
       }
-      
-      setLoadingMessage('Content generated successfully!');
-      // Small delay to show success message
-      await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (error) {
       console.error('Error generating content:', error);
-      setLoadingMessage('An error occurred. Please try again.');
-      // Small delay to show error message
-      await new Promise(resolve => setTimeout(resolve, 2000));
     } finally {
       setIsLoading(false);
       setLoadingMessage('');
+      router.push('/dashboard');
     }
   };
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 py-12">
-      <LoadingModal isOpen={isLoading} message={loadingMessage} />
+      {/* <div className="absolute left-0 top-0 h-full w-full overflow-hidden -z-10 opacity-30">
+        <DotPattern 
+          className={cn(
+            "[mask-image:radial-gradient(1000px_circle_at_center,white,transparent)]",
+          )}
+        />
+      </div> */}
       <div className="w-full max-w-4xl space-y-8">
         <div className="space-y-4 text-center">
+          {/* <TextHoverEffect text="MarketMind"/> */}
           <h1 className="text-5xl pb-2 font-bold tracking-tight bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
-            Ready when you are.
+            Find your product-market fit
           </h1>
           <p className="text-lg text-muted-foreground">
-            Ask anything about your market data and get instant insights.
+            Our agents will find detailed market research, competitive analysis, and strategic insights for your product
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="relative group">
+          <div className="relative group rounded-full bg-background">
             <Input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask anything"
+            onChange={(e) => setQuery(e.target.value)}
+              placeholder="What are you building?"
               className="w-full px-6 py-8 text-xl rounded-full hover:border-primary/30 focus:border-primary/50 transition-all duration-300 pr-16 placeholder:text-muted-foreground/50"
               disabled={isLoading}
             />
@@ -217,23 +226,29 @@ export default function GeneratePage() {
               <SendHorizontal className="w-6 h-6" />
               <span className="sr-only">Submit</span>
             </Button>
+            <BorderBeam duration={20} size={100} />
           </div>
         </form>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 px-1">
-          {exampleQueries.map((example, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                setQuery(example);
-                // Set content_id when clicking an example query
-                setContentId(`example-${index + 1}`);
-              }}
-              className="text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground rounded-lg border border-border/40 hover:border-border bg-background/50 hover:bg-background/80 transition-all duration-200"
-            >
-              {example}
-            </button>
-          ))}
+          {exampleQueries.map((example, index) => {
+            const Icon = example.icon;
+            return (
+              <button
+                key={index}
+                onClick={() => {
+                  setQuery(example.text);
+                  setContentId(`example-${index + 1}`);
+                }}
+                className="group text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground rounded-lg border border-border/40 hover:border-border bg-background/50 hover:bg-background/80 transition-all duration-200 flex items-center gap-3"
+              >
+                <Icon className="w-5 h-5 text-primary/70 group-hover:text-primary transition-colors" />
+                {example.text}
+              </button>
+            );
+          })}
         </div>
+        <Ripple className="w-full h-full -z-10" />
+
       </div>
     </div>
   );

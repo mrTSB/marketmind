@@ -13,6 +13,7 @@ import {
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { ContentIdContext } from "@/app/providers/content_id_provider";
 import { useContext } from 'react';
+import { cn } from '@/lib/utils';
 
 const Navigation = () => {
   const pathname = usePathname();
@@ -21,8 +22,8 @@ const Navigation = () => {
   const { contentId, setContentId } = ctx;
 
   const navItems = [
-    // { name: 'Home', path: '/' },
-    { name: 'Generate', path: '/generate', alwaysVisible: true },
+    { name: 'Home', path: '/dashboard', alwaysVisible: true },
+    { name: 'Generate', path: '/generate', alwaysVisible: false },
     { name: 'Personas', path: '/personas', alwaysVisible: false },
     { name: 'Market Research', path: '/market-research', alwaysVisible: false },
     { name: 'Go To Market', path: '/gtm', alwaysVisible: false },
@@ -30,11 +31,8 @@ const Navigation = () => {
     { name: 'Campaigns', path: '/campaigns', alwaysVisible: false },
   ];
 
-  // console.log('Navigation: Rendering with contentId:', contentId);
-  // console.log('Navigation: Visible items:', navItems.filter(item => item.alwaysVisible || contentId !== null).map(item => item.name));
-
   return (
-    <div className="border-b border-border">
+    <div className="sticky top-0 z-50 border-b border-border bg-background/50 backdrop-blur-sm shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
             <Link href="/" className="flex flex-row items-center">
@@ -48,7 +46,11 @@ const Navigation = () => {
                   <NavigationMenuItem key={item.path}>
                     <NavigationMenuLink
                       href={item.path}
-                      className={navigationMenuTriggerStyle()}
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        pathname === item.path ? "bg-background/50" : "bg-transparent",
+                        "hover:bg-background/80 transition-colors duration-200"
+                      )}
                       active={pathname === item.path}
                     >
                       {item.name}
@@ -64,4 +66,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation; 
+export default Navigation;
