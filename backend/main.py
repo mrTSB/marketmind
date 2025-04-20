@@ -230,10 +230,6 @@ async def group_chat(chat_request: GroupChatRequest):
             {"role": "system", "content": persona["chat_system_prompt"]},
             {"role": "user", "content": chat_request.initial_message}
         ]
-
-
-        for msg in responses:
-            messages.append({"role": "user", "content": msg["content"]})
         
         # Get response from LLM
         response = await llm_call_messages_async(messages, model="google/gemini-2.5-flash-preview")
