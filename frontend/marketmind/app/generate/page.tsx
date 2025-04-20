@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useContext } from 'react';
-import { SendHorizontal } from 'lucide-react';
+import { SendHorizontal, Droplet, ChefHat, ShoppingBag, Brain } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { generateContent, getCampaigns, getMarketResearch, getPersonas, getExecutiveBrief, getGTMPlan } from '@/app/communicator';
@@ -33,10 +33,22 @@ export default function GeneratePage() {
   }, [contentId, setContentId]);
 
   const exampleQueries = [
-    "Analyze market potential for our AI-powered CRM",
-    "Research competitors in the fintech space",
-    "Evaluate market size for sustainable packaging",
-    "Identify opportunities in healthcare tech"
+    {
+      text: "A smart water bottle that tracks hydration",
+      icon: Droplet
+    },
+    {
+      text: "An AI-powered personal chef",
+      icon: ChefHat
+    },
+    {
+      text: "A sustainable fashion marketplace",
+      icon: ShoppingBag
+    },
+    {
+      text: "A mental health app that uses voice analysis",
+      icon: Brain
+    }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -218,19 +230,22 @@ export default function GeneratePage() {
           </div>
         </form>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 px-1">
-          {exampleQueries.map((example, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                setQuery(example);
-                // Set content_id when clicking an example query
-                setContentId(`example-${index + 1}`);
-              }}
-              className="text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground rounded-lg border border-border/40 hover:border-border bg-background/50 hover:bg-background/80 transition-all duration-200"
-            >
-              {example}
-            </button>
-          ))}
+          {exampleQueries.map((example, index) => {
+            const Icon = example.icon;
+            return (
+              <button
+                key={index}
+                onClick={() => {
+                  setQuery(example.text);
+                  setContentId(`example-${index + 1}`);
+                }}
+                className="group text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground rounded-lg border border-border/40 hover:border-border bg-background/50 hover:bg-background/80 transition-all duration-200 flex items-center gap-3"
+              >
+                <Icon className="w-5 h-5 text-primary/70 group-hover:text-primary transition-colors" />
+                {example.text}
+              </button>
+            );
+          })}
         </div>
         <Ripple className="w-full h-full -z-10" />
 
