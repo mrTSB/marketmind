@@ -1,7 +1,6 @@
 "use client"
 
 import { Campaign } from "@/components/Campaign"
-import { CampaignList } from "@/components/CampaignList"
 import { QuickLoadingModal } from "@/components/QuickLoadingModal"
 import { useContext, useEffect, useState } from "react"
 import { ContentIdContext } from "../providers/content_id_provider"
@@ -10,6 +9,7 @@ export default function CampaignsPage() {
   const ctx = useContext(ContentIdContext);
   if (!ctx) throw new Error("ContentIdContext missing");
   const { contentId, setContentId } = ctx;
+  
   const [campaigns, setCampaigns] = useState([
     {
       name: "Summer Refresh",
@@ -55,19 +55,24 @@ export default function CampaignsPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   const loadCampaigns = async () => {
-    if (!contentId) return;
+    if (!contentId) {
+      console.warn('No contentId provided, using default campaigns');
+      setIsLoading(false);
+      return;
+    }
       
     try {
       const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=campaigns`);
-      console.log(response);
       if (!response.ok) {
         throw new Error('Failed to load campaigns');
       }
       const data = await response.json();
-      console.log(data.campaigns);
-      setCampaigns(data.campaigns);
+      if (data.campaigns) {
+        setCampaigns(data.campaigns);
+      }
     } catch (error) {
       console.error('Error loading campaigns:', error);
+      // Keep the default campaigns if API fails
     } finally {
       setIsLoading(false);
     }
@@ -75,7 +80,7 @@ export default function CampaignsPage() {
 
   useEffect(() => {
     loadCampaigns();
-  }, []);
+  }, [contentId]);
       
   
   if (isLoading) {
