@@ -160,7 +160,12 @@ def generate_personas(campaign_description: str) -> PersonaList:
             **base_persona.model_dump(),
             chat_system_prompt=chat_system_prompt,
             image_url=image_url,
-            messages=[]
+            messages=[
+                {
+                    "role": base_persona.name,
+                    "content": "Hey there! How can I help?"
+                },
+            ]
         )
         personas.append(persona)
     

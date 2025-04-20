@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Persona } from "@/components/Persona"
+import { ContentIdContext } from "../providers/content_id_provider";
 
 // Sample data - replace with actual data from your backend
 const initialPersonas = [
@@ -136,7 +137,32 @@ const initialPersonas = [
 ]
 
 export default function PersonasPage() {
+  const ctx = useContext(ContentIdContext);
+  if (!ctx) throw new Error("ContentIdContext missing");
+  const { contentId, setContentId } = ctx;
+  
   const [personas, setPersonas] = useState(initialPersonas)
+
+  const loadPersonas = async () => {
+    const memeContentId = "abc";
+
+    if (!memeContentId) return;
+      
+    try {
+      const response = await fetch(`/api/load-content?contentId=${memeContentId}&contentType=personas`);
+      if (!response.ok) {
+        throw new Error('Failed to load personas');
+      }
+      const data = await response.json();
+      setPersonas(data.personas);
+    } catch (error) {
+      console.error('Error loading personas:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadPersonas();
+  }, []);
 
   const handleMessagesUpdate = (name: string, newMessages: Array<{ role: string; content: string }>) => {
     setPersonas(prevPersonas =>
@@ -144,7 +170,7 @@ export default function PersonasPage() {
         persona.name === name
           ? { ...persona, messages: newMessages }
           : persona
-      )
+      ) ?? []
     )
   }
 

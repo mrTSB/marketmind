@@ -1,0 +1,44 @@
+{
+  "campaigns": [
+    {
+      "name": "Sip Green, Live Clean",
+      "slogan": "Hydrate with Purpose",
+      "concept": "Highlight the eco-friendly water bottle as not just a hydration tool but a statement of environmental responsibility. Showcase real stories of how using the bottle reduces plastic waste and helps local ecosystems.",
+      "target_audience": "Environmentally conscious millennials and Gen Z",
+      "key_message": "Choosing our water bottle means actively reducing plastic pollution and protecting the planet.",
+      "image_url": "https://v3.fal.media/files/panda/8128vxtFAmi2xBWOpZ0d7.png"
+    },
+    {
+      "name": "The Future Flows Here",
+      "slogan": "Drink Today, Save Tomorrow",
+      "concept": "Use futuristic visuals and technology-inspired motifs to associate the bottle with innovation and sustainability. Emphasize the long-term impact of making eco-friendly choices today for a healthier tomorrow.",
+      "target_audience": "Tech-savvy young adults and innovators",
+      "key_message": "Our eco-friendly bottle is the smart, innovative way to stay hydrated while caring for the earth’s future.",
+      "image_url": "https://v3.fal.media/files/kangaroo/sw-JMVEuC1TnIYlHSe1jx.png"
+    },
+    {
+      "name": "Nature’s Best Companion",
+      "slogan": "Drink from Nature, Save Nature",
+      "concept": "Connect the product directly with nature by featuring outdoor adventure and natural landscapes. Encourage users to carry the bottle on their journeys to reduce disposable plastic and preserve wild places.",
+      "target_audience": "Outdoor enthusiasts, hikers, and eco-tourists",
+      "key_message": "Bring nature along and protect it by drinking sustainably with our eco-friendly water bottle.",
+      "image_url": "https://v3.fal.media/files/penguin/31X92A_3YZ9K4_-Ul11m9.png"
+    },
+    {
+      "name": "Every Drop Counts Challenge",
+      "slogan": "Change Your Bottle, Change the World",
+      "concept": "Launch a social challenge encouraging users to switch from disposable bottles to the eco bottle. Encourage sharing photos and stories on social media with a branded hashtag to create community and viral engagement.",
+      "target_audience": "Social media active young adults and activists",
+      "key_message": "Small personal actions, like switching your bottle, can lead to big environmental change when we do it together.",
+      "image_url": "https://v3.fal.media/files/penguin/RvUccd28FBS9IQIk3Yueg.png"
+    },
+    {
+      "name": "Stylish Sustainability",
+      "slogan": "Eco Chic Hydration",
+      "concept": "Position the water bottle as a stylish accessory as much as an eco product. Use trendy designs, influencer partnerships, and lifestyle imagery to appeal to fashion-forward consumers who want to be sustainable without compromising style.",
+      "target_audience": "Fashion-conscious urban professionals and students",
+      "key_message": "Look good, feel good, and do good with our eco-friendly water bottle that fits your style and values.",
+      "image_url": "https://v3.fal.media/files/penguin/cmZvRUBD6RpOB3TI02Ewf.png"
+    }
+  ]
+}
