@@ -54,7 +54,7 @@ export function MarketSize({
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg">
+          <div className="flex items-center gap-2 p-3 bg-blue-500/10 rounded-lg">
             <DollarSign className="h-5 w-5 text-blue-500" />
             <div>
               <p className="text-sm font-medium">Total Market Value</p>
@@ -63,7 +63,7 @@ export function MarketSize({
             </div>
           </div>
           
-          <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg">
+          <div className="flex items-center gap-2 p-3 bg-green-500/10 rounded-lg">
             <TrendingUp className="h-5 w-5 text-green-500" />
             <div>
               <p className="text-sm font-medium">Growth Rate</p>
@@ -74,7 +74,7 @@ export function MarketSize({
             </div>
           </div>
           
-          <div className="flex items-center gap-2 p-3 bg-purple-50 rounded-lg">
+          <div className="flex items-center gap-2 p-3 bg-purple-500/10 rounded-lg">
             <Target className="h-5 w-5 text-purple-500" />
             <div>
               <p className="text-sm font-medium">Projected Value</p>
@@ -84,7 +84,7 @@ export function MarketSize({
           </div>
         </div>
         
-        <div className="bg-gray-50 p-4 rounded-lg">
+        <div className="bg-gray-500/10 p-4 rounded-lg">
           <div className="flex items-center gap-2 mb-3">
             <LineChart className="h-4 w-4 text-blue-500" />
             <h3 className="font-medium">Growth Analysis</h3>
