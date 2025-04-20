@@ -1,0 +1,44 @@
+{
+  "campaigns": [
+    {
+      "name": "Print Your Dream Home",
+      "slogan": "From Your Imagination to Reality",
+      "concept": "Showcase real customer stories turning their dream house designs into tangible homes with 3D printing technology, emphasizing personalization and innovation.",
+      "target_audience": "Tech-savvy homebuyers and modern architects",
+      "key_message": "Our home 3D printing service transforms your unique vision into an affordable, custom-built home faster than traditional methods.",
+      "image_url": "https://v3.fal.media/files/monkey/ZcCj96RQlBAzHlvio8H4a.png"
+    },
+    {
+      "name": "Future Foundations",
+      "slogan": "Building Tomorrow, One Layer at a Time",
+      "concept": "Focus on the cutting-edge technology and sustainability aspects of 3D printed homes, highlighting eco-friendly materials and reduced waste in construction.",
+      "target_audience": "Environmentally conscious millennials and green builders",
+      "key_message": "Experience sustainable, efficient home building through revolutionary 3D printing technology that conserves resources.",
+      "image_url": "https://v3.fal.media/files/koala/evWGzwIgrx_nWPs5Yo86r.png"
+    },
+    {
+      "name": "QuickBuild Living",
+      "slogan": "Your Home, Constructed in Days, Not Months",
+      "concept": "Emphasize speed and convenience by comparing traditional building timelines with our rapid 3D printing service, featuring time-lapse videos of homes being printed.",
+      "target_audience": "Busy families and professionals seeking fast, hassle-free home construction",
+      "key_message": "Get into your brand new home faster with our innovative 3D printing service that cuts construction time dramatically.",
+      "image_url": "https://v3.fal.media/files/monkey/RrsvPqka53RV6taSACnFL.png"
+    },
+    {
+      "name": "Design Without Limits",
+      "slogan": "Print Bold. Live Bold.",
+      "concept": "Highlight creative freedom enabled by 3D printing, showing unique architectural styles that defy conventional constraints and enable customized features.",
+      "target_audience": "Creative homeowners, designers, and architects seeking distinctive home aesthetics",
+      "key_message": "Break free from traditional building limits—our 3D printing makes complex, personalized home designs possible and affordable.",
+      "image_url": "https://v3.fal.media/files/penguin/Nd3EQ2EZxtjfVGLnZ20Qj.png"
+    },
+    {
+      "name": "SmartHome Print Revolution",
+      "slogan": "Where Smart Tech Meets Smart Construction",
+      "concept": "Integrate smart home technology promotion with 3D printed homes, demonstrating homes that are pre-built with embedded IoT and automation systems.",
+      "target_audience": "Tech enthusiasts and early adopters interested in smart living solutions",
+      "key_message": "Welcome to the future of living with homes 3D printed for seamless integration of smart technology and modern comfort.",
+      "image_url": "https://v3.fal.media/files/zebra/XFvVCOABUSsayVjuxdcI3.png"
+    }
+  ]
+}

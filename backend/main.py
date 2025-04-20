@@ -176,6 +176,7 @@ async def chat_with_persona(chat_request: ChatRequest):
     """Chat with a persona using their system prompt"""
     content = db.read(chat_request.content_id)
     if not content:
+        print(f"Content not found: {chat_request.content_id}")
         raise HTTPException(status_code=404, detail=f"Content not found: {chat_request.content_id}")
     
     # Find the persona by name
@@ -183,6 +184,7 @@ async def chat_with_persona(chat_request: ChatRequest):
     persona = next((p for p in personas if p["name"] == chat_request.persona_name), None)
     
     if not persona:
+        print(f"Persona not found: {chat_request.persona_name}")
         raise HTTPException(status_code=404, detail=f"Persona not found: {chat_request.persona_name}")
     
     # Prepare messages for the LLM
@@ -195,7 +197,7 @@ async def chat_with_persona(chat_request: ChatRequest):
         messages.append({"role": msg.role, "content": msg.content})
     
     # Get response from LLM
-    response = await llm_call_messages_async(messages)
+    response = await llm_call_messages_async(messages, model="google/gemini-2.5-flash-preview")
     
     return ChatResponse(response=response)
 
