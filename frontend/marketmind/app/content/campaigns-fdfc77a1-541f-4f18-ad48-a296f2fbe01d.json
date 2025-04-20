@@ -1,0 +1,44 @@
+{
+  "campaigns": [
+    {
+      "name": "Journey Through Generations",
+      "slogan": "Discover the Past, Embrace the Future",
+      "concept": "Showcase multi-generational stories of Chinese American families, highlighting their struggles, achievements, and cultural heritage through intimate interviews and archival footage.",
+      "target_audience": "Chinese American families and millennials interested in cultural heritage",
+      "key_message": "Understanding your roots empowers your present and shapes a brighter future.",
+      "image_url": "https://v3.fal.media/files/tiger/aUnk7w4sahEWSlFACtvzq.png"
+    },
+    {
+      "name": "Voices Unheard",
+      "slogan": "Stories that Shape America",
+      "concept": "Focus on lesser-known personal narratives of Chinese Americans who contributed to American society, breaking stereotypes and challenging misconceptions via social media and interactive web content.",
+      "target_audience": "Young adults and social justice advocates curious about diversity and inclusion",
+      "key_message": "Every story matters – Chinese Americans have been integral to the American story.",
+      "image_url": "https://v3.fal.media/files/panda/smb3S2UB1uo0hEAWDDND8.png"
+    },
+    {
+      "name": "Bridging Cultures",
+      "slogan": "Where East Meets West, Hearts Connect",
+      "concept": "Highlight the cultural fusion experienced by Chinese Americans through art, food, music, and tradition. Use visually compelling vignettes to inspire pride and cultural appreciation.",
+      "target_audience": "Chinese Americans and broader multicultural communities",
+      "key_message": "Celebrating the unique blend of cultures that enriches identity and community.",
+      "image_url": "https://v3.fal.media/files/zebra/a6kgKmLBWC1GPDjq2W6jP.png"
+    },
+    {
+      "name": "Trailblazers and Changemakers",
+      "slogan": "Pioneering the American Dream",
+      "concept": "Profile influential Chinese American leaders across history and modern times, emphasizing their impact in politics, science, arts, and business in a dynamic documentary series.",
+      "target_audience": "Professionals, students, and history enthusiasts seeking inspiration and role models",
+      "key_message": "Chinese Americans have been shaping innovation and leadership in America for generations.",
+      "image_url": "https://v3.fal.media/files/elephant/qbTmN0Zx0jDss20ybtSZm.png"
+    },
+    {
+      "name": "The Hidden Chronicles",
+      "slogan": "Unveiling Stories Behind the Silence",
+      "concept": "Create a campaign that explores the challenges of immigration, discrimination, and resilience faced by Chinese Americans. Combine emotional storytelling with calls to action for greater awareness and solidarity.",
+      "target_audience": "Activists, educators, and empathetic viewers interested in social justice and immigrant experiences",
+      "key_message": "Recognizing past hardships is essential to building a more inclusive future.",
+      "image_url": "https://v3.fal.media/files/tiger/e9McDoRpMR0EfWOzEGwET.png"
+    }
+  ]
+}
