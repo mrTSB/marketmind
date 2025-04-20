@@ -46,14 +46,13 @@ const Navigation = () => {
               <NavigationMenuList>
                 {navItems.map((item) => (
                   <NavigationMenuItem key={item.path}>
-                    <Link href={item.path} passHref legacyBehavior>
-                      <NavigationMenuLink
-                        className={navigationMenuTriggerStyle()}
-                        active={pathname === item.path}
-                      >
-                        {item.name}
-                      </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink
+                      href={item.path}
+                      className={navigationMenuTriggerStyle()}
+                      active={pathname === item.path}
+                    >
+                      {item.name}
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
               </NavigationMenuList>

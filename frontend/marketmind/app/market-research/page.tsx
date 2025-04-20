@@ -31,7 +31,7 @@ export default function MarketResearchPage() {
         throw new Error('Failed to load market research');
       }
       const data = await response.json();
-      console.log(data);
+      console.log(data.pain_points)
       setMarketResearch(data);
     } catch (error) {
       console.error('Error loading market research:', error);
@@ -127,7 +127,7 @@ export default function MarketResearchPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">Competitive Analysis</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {marketResearch.competitors.map((competitor, index) => (
+              {marketResearch.competitors.map((competitor, index) => (
               <Competitor key={index} {...competitor} />
             ))}
           </div>
@@ -137,18 +137,18 @@ export default function MarketResearchPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">Market Challenges</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <PainPoints
-              pain_points={marketResearch?.painPoints?.pain_points ?? []}
-              market_impact={marketResearch?.painPoints?.market_impact ?? "No market impact data available"}
-              opportunity_size={marketResearch?.painPoints?.opportunity_size ?? "No opportunity size data available"}
-              priority_level={marketResearch?.painPoints?.priority_level ?? "medium"}
+          <PainPoints
+              pain_points={marketResearch?.pain_points?.pain_points ?? []}
+              market_impact={marketResearch?.pain_points?.market_impact ?? "No market impact data available"}
+              opportunity_size={marketResearch?.pain_points?.opportunity_size ?? "No opportunity size data available"}
+              priority_level={marketResearch?.pain_points?.priority_level ?? "medium"}
             />
             <RegulatoryEnvironment
-              current_regulations={marketResearch?.regulatory?.current_regulations ?? []}
-              pending_regulations={marketResearch?.regulatory?.pending_regulations ?? []}
-              compliance_requirements={marketResearch?.regulatory?.compliance_requirements ?? []}
-              regulatory_bodies={marketResearch?.regulatory?.regulatory_bodies ?? []}
-              potential_risks={marketResearch?.regulatory?.potential_risks ?? []}
+              current_regulations={marketResearch?.regulatory_environment?.current_regulations ?? []}
+              pending_regulations={marketResearch?.regulatory_environment?.pending_regulations ?? []}
+              compliance_requirements={marketResearch?.regulatory_environment?.compliance_requirements ?? []}
+              regulatory_bodies={marketResearch?.regulatory_environment?.regulatory_bodies ?? []}
+              potential_risks={marketResearch?.regulatory_environment?.potential_risks ?? []}
             />
           </div>
         </section>

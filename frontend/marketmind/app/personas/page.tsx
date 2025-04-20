@@ -4,6 +4,9 @@ import { useContext, useEffect, useState } from "react"
 import { Persona } from "@/components/Persona"
 import { ContentIdContext } from "../providers/content_id_provider";
 import { QuickLoadingModal } from "@/components/QuickLoadingModal";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { groupChat } from "../communicator";
 
 // Sample data - replace with actual data from your backend
 const initialPersonas = [
@@ -137,6 +140,12 @@ const initialPersonas = [
   }
 ]
 
+interface GroupMessage {
+  role: string;
+  content: string;
+  persona?: string;
+}
+
 export default function PersonasPage() {
   const ctx = useContext(ContentIdContext);
   if (!ctx) throw new Error("ContentIdContext missing");
@@ -144,6 +153,9 @@ export default function PersonasPage() {
   
   const [personas, setPersonas] = useState(initialPersonas)
   const [isLoading, setIsLoading] = useState(true)
+  const [isGroupChatOpen, setIsGroupChatOpen] = useState(false);
+  const [groupMessages, setGroupMessages] = useState<GroupMessage[]>([]);
+  const [groupChatInput, setGroupChatInput] = useState("");
 
   const loadPersonas = async () => {
     if (!contentId) return;
@@ -176,17 +188,96 @@ export default function PersonasPage() {
     )
   }
 
+  const handleGroupChat = async () => {
+    if (!groupChatInput.trim() || !contentId) return;
+
+    // Add user message
+    const userMessage: GroupMessage = {
+      role: "User",
+      content: groupChatInput,
+    };
+    setGroupMessages(prev => [...prev, userMessage]);
+
+    try {
+      // Get responses from all personas using the API
+      const responses = await groupChat(contentId, groupChatInput);
+
+      console.log(responses);
+      
+      // Add each persona's response to the messages
+      responses.responses.forEach(personaResponse => {
+        const response: GroupMessage = {
+          role: personaResponse.persona_name,
+          content: personaResponse.response,
+          persona: personaResponse.persona_name
+        };
+        setGroupMessages(prev => [...prev, response]);
+      });
+    } catch (error) {
+      console.error('Error in group chat:', error);
+      // You might want to show an error message to the user here
+    }
+
+    setGroupChatInput("");
+  };
+
   if (isLoading) {
     return <QuickLoadingModal message="Loading customer personas..." />;
   }
 
   return (
     <div className="container py-8 space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">Customer Personas</h1>
-        <p className="text-muted-foreground mt-2">
-          Detailed profiles of our target customers to help guide marketing and product decisions.
-        </p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold">Customer Personas</h1>
+          <p className="text-muted-foreground mt-2">
+            Detailed profiles of our target customers to help guide marketing and product decisions.
+          </p>
+        </div>
+        <Dialog open={isGroupChatOpen} onOpenChange={setIsGroupChatOpen}>
+          <DialogTrigger asChild>
+            <Button variant="default" className="ml-4">
+              Open Group Chat
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+            <DialogHeader>
+              <DialogTitle>Group Chat with All Personas</DialogTitle>
+            </DialogHeader>
+            <div className="flex-1 flex flex-col min-h-0">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 border rounded-lg mb-4">
+                <div className="flex flex-col gap-4">
+                  {groupMessages.map((message, index) => (
+                    <div
+                      key={index}
+                      className={`p-3 rounded-lg break-words ${
+                        message.role === "User"
+                          ? "bg-primary text-primary-foreground ml-auto max-w-[80%] self-end"
+                          : "bg-muted max-w-[80%] self-start"
+                      }`}
+                    >
+                      {message.persona && (
+                        <div className="font-semibold text-sm mb-1">{message.persona}</div>
+                      )}
+                      <div className="whitespace-pre-wrap">{message.content}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex gap-2 p-4 border-t">
+                <input
+                  type="text"
+                  value={groupChatInput}
+                  onChange={(e) => setGroupChatInput(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleGroupChat()}
+                  className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Type your message..."
+                />
+                <Button onClick={handleGroupChat}>Send</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8">
         {personas.map((persona) => (
