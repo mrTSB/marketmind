@@ -50,6 +50,16 @@ export default function GeneratePage() {
       
       setLoadingMessage('Generating content...');
       const newContentId = await generateContent(productInfo);
+
+      // Clear existing content first
+      setLoadingMessage('Clearing existing content...');
+      const clearResponse = await fetch('/api/clear-content', {
+        method: 'POST',
+      });
+      
+      if (!clearResponse.ok) {
+        throw new Error('Failed to clear existing content');
+      }
       
       setLoadingMessage('Saving your content...');
       setContentId(Number(newContentId));

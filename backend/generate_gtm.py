@@ -8,6 +8,7 @@ from make_campaigns import DetailedCampaign
 # from rich import print as rprint
 
 class GTMPlan(BaseModel):
+    title: str
     executive_summary: str
     market_analysis: str
     value_proposition: str
@@ -41,6 +42,7 @@ def generate_gtm_plan(campaign: 'DetailedCampaign') -> GTMPlan:
     KPIs: {', '.join(campaign.key_performance_indicators)}
 
     Create a detailed go-to-market plan that includes:
+    Title: {campaign.name}
     1. Executive Summary (TLDR)
     2. Market Analysis (target market, segmentation, and problem statement)
     3. Value Proposition
@@ -67,6 +69,7 @@ def generate_gtm_plan(campaign: 'DetailedCampaign') -> GTMPlan:
 def format_gtm_plan(gtm_plan: GTMPlan):
     """Format the GTM plan for console output"""
     print("\n=== EXECUTIVE SUMMARY ===")
+    print(gtm_plan.title)
     print(gtm_plan.executive_summary)
     
     print("\n=== MARKET ANALYSIS ===")

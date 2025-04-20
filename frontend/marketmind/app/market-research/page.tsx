@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ArrowUpRight, TrendingUp, Users, Target, AlertTriangle, Scale, FileText } from "lucide-react"
 import { ContentIdContext } from "../providers/content_id_provider"
 import { useContext, useEffect, useState } from "react"
+import { QuickLoadingModal } from "@/components/QuickLoadingModal"
 
 // Sample data - in a real app, this would come from an API or database
 const marketData = {
@@ -95,8 +96,9 @@ export default function MarketResearchPage() {
   const { contentId, setContentId } = ctx;
 
   const [marketResearch, setMarketResearch] = useState(marketData)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const loadPersonas = async () => {
+  const loadMarketResearch = async () => {
     const memeContentId = "abc";
 
     if (!memeContentId) return;
@@ -111,14 +113,20 @@ export default function MarketResearchPage() {
       setMarketResearch(data);
     } catch (error) {
       console.error('Error loading market research:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    loadPersonas();
+    loadMarketResearch();
   }, []);
 
   console.log(marketResearch);
+
+  if (isLoading) {
+    return <QuickLoadingModal message="Loading market research..." />;
+  }
 
   return (
     <div className="container mx-auto py-8 space-y-8">
