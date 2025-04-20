@@ -1,13 +1,20 @@
 from models.llms import llm_call
+from models.images import generate_image
 from pydantic import BaseModel
 from typing import List
 
-class Campaign(BaseModel):
+class BaseCampaign(BaseModel):
     name: str
     slogan: str
     concept: str
     target_audience: str
     key_message: str
+
+class BaseCampaignList(BaseModel):
+    campaigns: List[BaseCampaign]
+
+class Campaign(BaseCampaign):
+    image_url: str
 
 class CampaignList(BaseModel):
     campaigns: List[Campaign]
@@ -18,6 +25,7 @@ class DetailedCampaign(BaseModel):
     concept: str
     target_audience: str
     key_message: str
+    image_url: str
     campaign_objectives: List[str]
     brand_positioning: str
     creative_strategy: str
@@ -29,7 +37,7 @@ class DetailedCampaign(BaseModel):
     risk_assessment: str
     success_metrics: List[str]
 
-def generate_campaign_ideas(product_info: str, company_info: str) -> CampaignList:
+def generate_base_campaigns(product_info: str, company_info: str) -> BaseCampaignList:
     prompt = f"""Generate 5 unique and creative ad campaign ideas for the following product and company:
 
     Product Information:
@@ -54,10 +62,46 @@ def generate_campaign_ideas(product_info: str, company_info: str) -> CampaignLis
     structured_response = llm_call(
         prompt,
         system_prompt=system_prompt,
-        response_format=CampaignList
+        response_format=BaseCampaignList
     )
     
     return structured_response
+
+def generate_campaign_with_image(base_campaign: BaseCampaign) -> Campaign:
+    # Generate image prompt based on campaign details
+    image_prompt = f"""Create a single, focused image that captures the essence of this campaign:
+    Name: {base_campaign.name}
+    Concept: {base_campaign.concept}
+
+    The image should have a clear, central subject that represents the main idea, with a cohesive background that supports the concept.
+    Keep the composition simple and impactful - one main subject with a complementary background that tells the story.
+    
+    IMPORTANT: The image must be purely visual with no text, words, or numbers. Focus on a single, powerful visual that conveys the message through composition and visual elements only."""
+    
+    # Generate image with specific model
+    image_url = generate_image(image_prompt, model="fal-ai/flux/schnell")
+    
+    # Create Campaign object with image URL
+    return Campaign(
+        name=base_campaign.name,
+        slogan=base_campaign.slogan,
+        concept=base_campaign.concept,
+        target_audience=base_campaign.target_audience,
+        key_message=base_campaign.key_message,
+        image_url=image_url
+    )
+
+def generate_campaign_ideas(product_info: str, company_info: str) -> CampaignList:
+    # First generate base campaigns
+    base_campaigns = generate_base_campaigns(product_info, company_info)
+    
+    # Then generate images for each campaign
+    campaigns_with_images = []
+    for base_campaign in base_campaigns.campaigns:
+        campaign_with_image = generate_campaign_with_image(base_campaign)
+        campaigns_with_images.append(campaign_with_image)
+    
+    return CampaignList(campaigns=campaigns_with_images)
 
 def generate_detailed_campaign(campaign: Campaign, product_info: str, company_info: str) -> DetailedCampaign:
     prompt = f"""Generate a detailed marketing campaign plan for the following campaign, product, and company:
@@ -68,6 +112,7 @@ def generate_detailed_campaign(campaign: Campaign, product_info: str, company_in
     Concept: {campaign.concept}
     Target Audience: {campaign.target_audience}
     Key Message: {campaign.key_message}
+    Image Url: {campaign.image_url}
 
     Product Information:
     {product_info}
@@ -119,7 +164,7 @@ if __name__ == "__main__":
     Market Position: Premium sustainable lifestyle brand
     """
     
-    # Generate initial campaign ideas
+    # Generate campaigns with images
     campaigns = generate_campaign_ideas(product_info, company_info)
     print("\n=== Ad Campaign Ideas ===\n")
     for i, campaign in enumerate(campaigns.campaigns, 1):
@@ -128,6 +173,7 @@ if __name__ == "__main__":
         print(f"Concept: {campaign.concept}")
         print(f"Target Audience: {campaign.target_audience}")
         print(f"Key Message: {campaign.key_message}")
+        print(f"Image URL: {campaign.image_url}")
         print("\n" + "-"*50 + "\n")
     
     # Example of generating detailed campaign for the first campaign

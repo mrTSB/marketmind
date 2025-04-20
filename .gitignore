@@ -1,5 +1,7 @@
 # Custom
 test_results/
+.ruff_cache/
+*.env
 
 # Python
 __pycache__/
