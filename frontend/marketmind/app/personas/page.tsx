@@ -3,6 +3,7 @@
 import { useContext, useEffect, useState } from "react"
 import { Persona } from "@/components/Persona"
 import { ContentIdContext } from "../providers/content_id_provider";
+import { QuickLoadingModal } from "@/components/QuickLoadingModal";
 
 // Sample data - replace with actual data from your backend
 const initialPersonas = [
@@ -142,6 +143,7 @@ export default function PersonasPage() {
   const { contentId, setContentId } = ctx;
   
   const [personas, setPersonas] = useState(initialPersonas)
+  const [isLoading, setIsLoading] = useState(true)
 
   const loadPersonas = async () => {
     const memeContentId = "abc";
@@ -157,6 +159,8 @@ export default function PersonasPage() {
       setPersonas(data.personas);
     } catch (error) {
       console.error('Error loading personas:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -172,6 +176,10 @@ export default function PersonasPage() {
           : persona
       ) ?? []
     )
+  }
+
+  if (isLoading) {
+    return <QuickLoadingModal message="Loading customer personas..." />;
   }
 
   return (
