@@ -87,7 +87,7 @@ export function Competitor({
           <div className="flex-1">
             <p className="text-sm font-medium">Market Share</p>
             <div className="flex items-center gap-2">
-              <div className="h-2 flex-1 bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-2 flex-1 bg-gray-500/10 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-purple-500 rounded-full" 
                   style={{ width: `${market_share}%` }}
