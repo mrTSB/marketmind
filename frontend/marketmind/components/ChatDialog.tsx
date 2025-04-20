@@ -145,7 +145,7 @@ export function ChatDialog({
                   <p className="text-xs font-medium mb-1 text-muted-foreground">
                     {message.role === "assistant" ? personaName : message.role}
                   </p>
-                  {message.role === personaName && message.isNew ? (
+                  {message.role === "assistant" && message.isNew ? (
                     <TextAnimate once={true} animation="blurIn" by="character" as="p" className="text-sm whitespace-pre-wrap">
                       {message.content}
                     </TextAnimate>

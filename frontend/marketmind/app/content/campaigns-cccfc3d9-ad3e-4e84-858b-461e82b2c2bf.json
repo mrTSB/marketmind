@@ -1,0 +1,44 @@
+{
+  "campaigns": [
+    {
+      "name": "Bridging Worlds",
+      "slogan": "Discover the Journey, Embrace the Story",
+      "concept": "Highlight the unique blend of Indian and American cultures through compelling personal stories featured in the documentary, emphasizing connection and identity.",
+      "target_audience": "Young adults and families interested in multicultural experiences and heritage stories",
+      "key_message": "Experience the powerful fusion of two rich cultures shaping new identities.",
+      "image_url": "https://v3.fal.media/files/zebra/u14EzamPerJh0AHr3EDq2.png"
+    },
+    {
+      "name": "Faces of Two Nations",
+      "slogan": "Every Story Matters, Every Identity Counts",
+      "concept": "Focus on intimate portraits of Indian Americans sharing their challenges and triumphs, using social media mini-clips to build emotional engagement before releasing the full documentary.",
+      "target_audience": "Social media users aged 18-35 who follow inclusive and identity-centered content",
+      "key_message": "Behind every face is a story of perseverance, culture, and pride that shapes America.",
+      "image_url": "https://v3.fal.media/files/kangaroo/j1zgm6d7LfcROQJcgz-qs.png"
+    },
+    {
+      "name": "Heritage in Motion",
+      "slogan": "The Past Inspires the Future",
+      "concept": "Create an interactive digital experience paired with the documentary that explores Indian American history, culture, and contributions through immersive web features and community events.",
+      "target_audience": "Educational institutions, history enthusiasts, and community organizations",
+      "key_message": "Understanding our heritage enriches our present and ignites tomorrow’s possibilities.",
+      "image_url": "https://v3.fal.media/files/panda/BPyo22WHoGjdTBrK6Nsmk.png"
+    },
+    {
+      "name": "Voices Unheard",
+      "slogan": "Shining Light on Untold Stories",
+      "concept": "A campaign spotlighting lesser-known narratives within the Indian American community that challenge stereotypes and broaden perspectives, including panel discussions and Q&A sessions with filmmakers.",
+      "target_audience": "Culturally curious adults, documentary fans, and advocates for diversity",
+      "key_message": "Discover the untold stories that reshape what it means to be Indian American today.",
+      "image_url": "https://v3.fal.media/files/koala/hjxgSWuE6rqKVx5HVhYdI.png"
+    },
+    {
+      "name": "Cultural Mosaic",
+      "slogan": "Pieces That Make Us Whole",
+      "concept": "Celebrate the diversity within the Indian American experience by showcasing different traditions and lifestyles in a vibrant, colorful campaign combining film excerpts, art, and music performances inspired by the documentary.",
+      "target_audience": "Art lovers, festival-goers, and multicultural event attendees",
+      "key_message": "The Indian American community is a rich mosaic of traditions, stories, and dreams woven into the American fabric.",
+      "image_url": "https://v3.fal.media/files/lion/5E8UjyFna6V9tcK-F7r8S.png"
+    }
+  ]
+}
