@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import {
   NavigationMenu,
@@ -10,7 +11,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-
+import { ModeToggle } from "@/components/ui/mode-toggle";
 const Navigation = () => {
   const pathname = usePathname();
 
@@ -37,7 +38,7 @@ const Navigation = () => {
               <NavigationMenuList>
                 {navItems.map((item) => (
                   <NavigationMenuItem key={item.path}>
-                    <Link href={item.path} passHref>
+                    <Link href={item.path} passHref legacyBehavior>
                       <NavigationMenuLink
                         className={navigationMenuTriggerStyle()}
                         active={pathname === item.path}
@@ -49,6 +50,7 @@ const Navigation = () => {
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
+            <ModeToggle />
         </div>
       </div>
     </div>

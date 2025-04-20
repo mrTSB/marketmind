@@ -71,21 +71,21 @@ export function PainPoints({
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg">
+          <div className="flex items-center gap-2 p-3 bg-blue-500/10 rounded-lg">
             <Target className="h-5 w-5 text-blue-500" />
             <div>
               <p className="text-sm font-medium">Market Impact</p>
               <p className="text-sm text-muted-foreground">{market_impact}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg">
+          <div className="flex items-center gap-2 p-3 bg-green-500/10 rounded-lg">
             <DollarSign className="h-5 w-5 text-green-500" />
             <div>
               <p className="text-sm font-medium">Opportunity Size</p>
               <p className="text-sm text-muted-foreground">{opportunity_size}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 p-3 bg-red-50 rounded-lg">
+          <div className="flex items-center gap-2 p-3 bg-red-500/10 rounded-lg">
             <AlertCircle className={`h-5 w-5 ${getSeverityColor(priority_level)}`} />
             <div>
               <p className="text-sm font-medium">Priority Level</p>
@@ -108,7 +108,7 @@ export function PainPoints({
                   <CardDescription className="mt-2 space-y-3">
                     <p className="text-sm">{point.description}</p>
                     
-                    <div className="bg-amber-50 p-3 rounded-md">
+                    <div className="bg-amber-500/10 p-3 rounded-md">
                       <div className="flex items-center gap-2 mb-1">
                         <AlertTriangle className="h-4 w-4 text-amber-500" />
                         <p className="font-medium text-sm">Impact:</p>
