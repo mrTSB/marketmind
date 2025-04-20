@@ -2,6 +2,7 @@
 
 import { ExecutiveBrief } from "@/components/executive-brief/ExecutiveBrief"
 import { useEffect, useState } from "react";
+import { QuickLoadingModal } from "@/components/QuickLoadingModal";
 
 export default function ExecutiveBriefPage() {
   // This would typically come from an API or database
@@ -42,6 +43,8 @@ export default function ExecutiveBriefPage() {
     ]
   });
 
+  const [isLoading, setIsLoading] = useState(true)
+
   const loadExecutiveBrief = async () => {
     const memeContentId = "abc";
 
@@ -56,12 +59,18 @@ export default function ExecutiveBriefPage() {
       setExecutiveBriefData(data);
     } catch (error) {
       console.error('Error loading executive brief:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     loadExecutiveBrief();
   }, []);
+
+  if (isLoading) {
+    return <QuickLoadingModal message="Loading executive brief..." />;
+  }
 
   return (
     <div className="container mx-auto py-8 max-w-6xl">

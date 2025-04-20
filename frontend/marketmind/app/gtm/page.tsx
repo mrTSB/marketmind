@@ -1,6 +1,7 @@
 "use client"
 
 import { GTMPlan } from "@/components/gtm/GTMPlan"
+import { QuickLoadingModal } from "@/components/QuickLoadingModal";
 import { useEffect, useState } from "react";
 
 export default function GTMPlanPage() {
@@ -44,6 +45,8 @@ export default function GTMPlanPage() {
     "growth_strategy": "Post-campaign growth will focus on solidifying partnerships with marketing associations and enterprise tech forums for co-marketing and referral programs. Acquisition efforts will leverage testimonials, case studies, and trial success stories for expanded outreach. Retention strategies include continuous customer education via webinars, personalized support, and feature upgrades. Scalability is planned through integration with popular enterprise systems and continuous AI model enhancement to maintain competitive advantage and broaden product applicability across industries."
   });
 
+  const [isLoading, setIsLoading] = useState(true)
+
   const loadGTMPlan = async () => {
     const memeContentId = "abc";
 
@@ -59,12 +62,18 @@ export default function GTMPlanPage() {
       setGTMPlanData(data);
     } catch (error) {
       console.error('Error loading gtm plan:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     loadGTMPlan();
   }, []);
+
+  if (isLoading) {
+    return <QuickLoadingModal message="Loading gtm plan..." />;
+  }
 
   return (
     <div className="container mx-auto py-8 max-w-6xl">
