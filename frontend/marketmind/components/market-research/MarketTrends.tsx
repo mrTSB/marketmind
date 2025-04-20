@@ -39,7 +39,7 @@ export function MarketTrends({
             </div>
             <div className="flex flex-wrap gap-2">
               {current_trends.map((trend, index) => (
-                <Badge key={index} variant="outline" className="text-sm">
+                <Badge key={index} variant="outline" className="text-sm whitespace-normal break-words max-w-full">
                   {trend}
                 </Badge>
               ))}
@@ -53,7 +53,7 @@ export function MarketTrends({
             </div>
             <div className="flex flex-wrap gap-2">
               {emerging_trends.map((trend, index) => (
-                <Badge key={index} variant="outline" className="text-sm">
+                <Badge key={index} variant="outline" className="text-sm whitespace-normal break-words max-w-full">
                   {trend}
                 </Badge>
               ))}
@@ -67,7 +67,7 @@ export function MarketTrends({
             </div>
             <div className="flex flex-wrap gap-2">
               {declining_trends.map((trend, index) => (
-                <Badge key={index} variant="outline" className="text-sm">
+                <Badge key={index} variant="outline" className="text-sm whitespace-normal break-words max-w-full">
                   {trend}
                 </Badge>
               ))}
@@ -81,7 +81,7 @@ export function MarketTrends({
             </div>
             <div className="flex flex-wrap gap-2">
               {technology_impact.map((trend, index) => (
-                <Badge key={index} variant="outline" className="text-sm">
+                <Badge key={index} variant="outline" className="text-sm whitespace-normal break-words max-w-full">
                   {trend}
                 </Badge>
               ))}
@@ -95,7 +95,7 @@ export function MarketTrends({
             </div>
             <div className="flex flex-wrap gap-2">
               {social_impact.map((trend, index) => (
-                <Badge key={index} variant="outline" className="text-sm">
+                <Badge key={index} variant="outline" className="text-sm whitespace-normal break-words max-w-full">
                   {trend}
                 </Badge>
               ))}

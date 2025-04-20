@@ -75,6 +75,20 @@ export interface ChatResponse {
   response: string;
 }
 
+export interface PersonaResponse {
+  persona_name: string;
+  response: string;
+}
+
+export interface GroupChatResponse {
+  responses: PersonaResponse[];
+}
+
+export interface GroupChatRequest {
+  content_id: string;
+  initial_message: string;
+}
+
 // API Functions
 export const generateContent = async (productInfo: ProductInfo): Promise<string> => {
   try {
@@ -216,6 +230,24 @@ export const chatWithPersona = async (
     return response.data.response;
   } catch (error) {
     console.error('Error chatting with persona:', error);
+    throw error;
+  }
+};
+
+export const groupChat = async (
+  contentId: string,
+  initialMessage: string
+): Promise<GroupChatResponse> => {
+  try {
+    const groupChatRequest: GroupChatRequest = {
+      content_id: contentId,
+      initial_message: initialMessage
+    };
+    
+    const response = await axios.post(`${BASE_URL}/group-chat`, groupChatRequest);
+    return response.data;
+  } catch (error) {
+    console.error('Error in group chat:', error);
     throw error;
   }
 };

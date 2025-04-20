@@ -90,12 +90,12 @@ export function RegulatoryEnvironment({
             
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Building className="h-4 w-4 text-purple-500" />
+                <Building className="h-8 w-4 text-purple-500" />
                 <h3 className="font-medium">Regulatory Bodies</h3>
               </div>
-              <div className="flex flex-wrap gap-2 pl-6">
+              <div className="flex flex-wrap gap-2 pl-6 max-h-48 overflow-y-auto">
                 {regulatory_bodies.map((body, index) => (
-                  <Badge key={index} variant="outline" className="text-sm">
+                  <Badge key={index} variant="outline" className="text-sm whitespace-normal">
                     {body}
                   </Badge>
                 ))}

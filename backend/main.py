@@ -56,6 +56,17 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     response: str
 
+class GroupChatRequest(BaseModel):
+    content_id: str
+    initial_message: str
+
+class PersonaResponse(BaseModel):
+    persona_name: str
+    response: str
+
+class GroupChatResponse(BaseModel):
+    responses: List[PersonaResponse]
+
 async def generate_parallel(product_info: str, company_info: str):
     """Run all content generation in parallel"""
     # First level of parallelization
@@ -200,6 +211,39 @@ async def chat_with_persona(chat_request: ChatRequest):
     response = await llm_call_messages_async(messages, model="google/gemini-2.5-flash-preview")
     
     return ChatResponse(response=response)
+
+@app.post("/group-chat", response_model=GroupChatResponse)
+async def group_chat(chat_request: GroupChatRequest):
+    """Generate responses from all personas for a given message"""
+    content = db.read(chat_request.content_id)
+    if not content:
+        raise HTTPException(status_code=404, detail=f"Content not found: {chat_request.content_id}")
+    
+    personas = content.get("personas", [])
+    if not personas:
+        raise HTTPException(status_code=404, detail="No personas found for this content")
+    
+    responses = []
+    for persona in personas:
+        # Prepare messages for the LLM
+        messages = [
+            {"role": "system", "content": persona["chat_system_prompt"]},
+            {"role": "user", "content": chat_request.initial_message}
+        ]
+
+
+        for msg in responses:
+            messages.append({"role": "user", "content": msg["content"]})
+        
+        # Get response from LLM
+        response = await llm_call_messages_async(messages, model="google/gemini-2.5-flash-preview")
+        
+        responses.append(PersonaResponse(
+            persona_name=persona["name"],
+            response=response
+        ))
+    
+    return GroupChatResponse(responses=responses)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
