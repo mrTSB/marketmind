@@ -18,13 +18,11 @@ export default function GeneratePage() {
   const { contentId, setContentId } = ctx;
 
   useEffect(() => {
-    // console.log('Generate: Initial mount, current contentId:', contentId);
     // Initialize contentId from localStorage if not already set
     if (contentId === null) {
       const storedContentId = localStorage.getItem('contentId');
-      // console.log('Generate: Found stored contentId:', storedContentId);
       if (storedContentId) {
-        setContentId(Number(storedContentId));
+        setContentId(storedContentId);
       }
     }
   }, [contentId, setContentId]);
@@ -52,14 +50,11 @@ export default function GeneratePage() {
       const newContentId = await generateContent(productInfo);
       
       setLoadingMessage('Saving your content...');
-      setContentId(Number(newContentId));
-      localStorage.setItem('contentId', newContentId);
+      setContentId(newContentId);
       
       setLoadingMessage('Loading Campaigns...');
       const campaigns = await getCampaigns(newContentId);
       console.log(campaigns);
-
-      const memeContentId = "abc";
       
       // Save campaigns to JSON file in content folder
       const campaignsJson = JSON.stringify(campaigns, null, 2);
@@ -69,7 +64,7 @@ export default function GeneratePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          contentId: memeContentId, 
+          contentId: newContentId, 
           content: campaignsJson,
           contentType: 'campaigns'
         }),
@@ -91,7 +86,7 @@ export default function GeneratePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          contentId: memeContentId, 
+          contentId: newContentId, 
           content: personasJson,
           contentType: 'personas'
         }),
@@ -113,7 +108,7 @@ export default function GeneratePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          contentId: memeContentId, 
+          contentId: newContentId, 
           content: marketResearchJson,
           contentType: 'market-research'
         }),
@@ -135,7 +130,7 @@ export default function GeneratePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          contentId: memeContentId, 
+          contentId: newContentId, 
           content: executiveBriefJson,
           contentType: 'executive-brief'
         }),
@@ -157,7 +152,7 @@ export default function GeneratePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          contentId: memeContentId, 
+          contentId: newContentId, 
           content: gtmPlanJson,
           contentType: 'gtm-plan'
         }),
@@ -219,10 +214,9 @@ export default function GeneratePage() {
             <button
               key={index}
               onClick={() => {
-                // console.log('Generate: Example clicked, setting contentId to:', index + 1);
                 setQuery(example);
                 // Set content_id when clicking an example query
-                setContentId(index + 1);
+                setContentId(`example-${index + 1}`);
               }}
               className="text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground rounded-lg border border-border/40 hover:border-border bg-background/50 hover:bg-background/80 transition-all duration-200"
             >

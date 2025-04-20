@@ -12,6 +12,9 @@ import { Input } from "@/components/ui/input"
 import { Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { TextAnimate } from "@/components/magicui/text-animate"
+import { chatWithPersona } from "@/app/communicator"
+import { useContext } from "react"
+import { ContentIdContext } from "@/app/providers/content_id_provider"
 
 interface Message {
   role: string
@@ -40,6 +43,12 @@ export function ChatDialog({
   const [isTyping, setIsTyping] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const contentIdCtx = useContext(ContentIdContext)
+  if (!contentIdCtx) throw new Error("ContentIdContext missing");
+  const { contentId } = contentIdCtx;
+  
+  // Ensure contentId is a string
+  const contentIdString = contentId || "";
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -63,7 +72,7 @@ export function ChatDialog({
     }
   }, [messages, onMessagesUpdate])
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return
 
     const userMessage = { role: "User", content: input }
@@ -76,17 +85,33 @@ export function ChatDialog({
     // Show typing indicator
     setIsTyping(true)
     
-    // Simulate persona response with delay
-    setTimeout(() => {
+    try {
+      // Call the API to get the persona's response
+      const response = await chatWithPersona(
+        contentIdString,
+        personaName,
+        newMessages
+      )
+      
       const assistantMessage = {
         role: personaName,
-        content: `This is a simulated response from ${personaName}. In a real implementation, this would be generated based on the system prompt and chat history.`,
+        content: response,
         isNew: true
       }
       
       onMessagesUpdate([...newMessages, assistantMessage])
+    } catch (error) {
+      console.error("Error getting persona response:", error)
+      // Fallback to a generic error message
+      const errorMessage = {
+        role: "assistant",
+        content: "I'm sorry, I'm having trouble responding right now. Please try again later.",
+        isNew: true
+      }
+      onMessagesUpdate([...newMessages, errorMessage])
+    } finally {
       setIsTyping(false)
-    }, 1500) // 1.5 second delay
+    }
   }
 
   return (

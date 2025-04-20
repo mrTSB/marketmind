@@ -97,12 +97,10 @@ export default function MarketResearchPage() {
   const [marketResearch, setMarketResearch] = useState(marketData)
 
   const loadPersonas = async () => {
-    const memeContentId = "abc";
-
-    if (!memeContentId) return;
+    if (!contentId) return;
       
     try {
-      const response = await fetch(`/api/load-content?contentId=${memeContentId}&contentType=market-research`);
+      const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=market-research`);
       if (!response.ok) {
         throw new Error('Failed to load market research');
       }
@@ -116,7 +114,7 @@ export default function MarketResearchPage() {
 
   useEffect(() => {
     loadPersonas();
-  }, []);
+  }, [contentId]);
 
   console.log(marketResearch);
 

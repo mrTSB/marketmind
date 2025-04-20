@@ -32,6 +32,8 @@ ENV/
 env/
 .env
 
+.data/
+
 # IDE
 .idea/
 .vscode/
