@@ -12,9 +12,12 @@ import { Input } from "@/components/ui/input"
 import { Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { TextAnimate } from "@/components/magicui/text-animate"
+import { chatWithPersona } from "@/app/communicator"
+import { useContext } from "react"
+import { ContentIdContext } from "@/app/providers/content_id_provider"
 
 interface Message {
-  role: string
+  role: "system" | "user" | "assistant"
   content: string
   isNew?: boolean
 }
@@ -40,6 +43,12 @@ export function ChatDialog({
   const [isTyping, setIsTyping] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const contentIdCtx = useContext(ContentIdContext)
+  if (!contentIdCtx) throw new Error("ContentIdContext missing");
+  const { contentId } = contentIdCtx;
+  
+  // Ensure contentId is a string
+  const contentIdString = contentId || "";
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -63,10 +72,10 @@ export function ChatDialog({
     }
   }, [messages, onMessagesUpdate])
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return
 
-    const userMessage = { role: "User", content: input }
+    const userMessage = { role: "user" as const, content: input }
     const newMessages = [...messages, userMessage]
     
     // Update with user message immediately
@@ -76,17 +85,33 @@ export function ChatDialog({
     // Show typing indicator
     setIsTyping(true)
     
-    // Simulate persona response with delay
-    setTimeout(() => {
+    try {
+      // Call the API to get the persona's response
+      const response = await chatWithPersona(
+        contentIdString,
+        personaName,
+        newMessages
+      )
+      
       const assistantMessage = {
-        role: personaName,
-        content: `This is a simulated response from ${personaName}. In a real implementation, this would be generated based on the system prompt and chat history.`,
+        role: "assistant" as const,
+        content: response,
         isNew: true
       }
       
       onMessagesUpdate([...newMessages, assistantMessage])
+    } catch (error) {
+      console.error("Error getting persona response:", error)
+      // Fallback to a generic error message
+      const errorMessage = {
+        role: "assistant" as const,
+        content: "I'm sorry, I'm having trouble responding right now. Please try again later.",
+        isNew: true
+      }
+      onMessagesUpdate([...newMessages, errorMessage])
+    } finally {
       setIsTyping(false)
-    }, 1500) // 1.5 second delay
+    }
   }
 
   return (
@@ -106,18 +131,20 @@ export function ChatDialog({
                 key={index}
                 className={cn(
                   "flex flex-col",
-                  message.role === "User" ? "items-end" : "items-start"
+                  message.role === "user" ? "items-end" : "items-start"
                 )}
               >
                 <div
                   className={cn(
                     "rounded-lg px-4 py-2 max-w-[80%]",
-                    message.role === "User"
+                    message.role === "user"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted"
                   )}
                 >
-                  <p className="text-xs font-medium mb-1 text-muted-foreground">{message.role}</p>
+                  <p className="text-xs font-medium mb-1 text-muted-foreground">
+                    {message.role === "assistant" ? personaName : message.role}
+                  </p>
                   {message.role === personaName && message.isNew ? (
                     <TextAnimate once={true} animation="blurIn" by="character" as="p" className="text-sm whitespace-pre-wrap">
                       {message.content}

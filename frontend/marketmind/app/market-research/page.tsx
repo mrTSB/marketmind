@@ -99,12 +99,12 @@ export default function MarketResearchPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   const loadMarketResearch = async () => {
-    const memeContentId = "abc";
+    if (!contentId) return;
 
-    if (!memeContentId) return;
+    if (!contentId) return;
       
     try {
-      const response = await fetch(`/api/load-content?contentId=${memeContentId}&contentType=market-research`);
+      const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=market-research`);
       if (!response.ok) {
         throw new Error('Failed to load market research');
       }
@@ -120,7 +120,7 @@ export default function MarketResearchPage() {
 
   useEffect(() => {
     loadMarketResearch();
-  }, []);
+  }, [contentId]);
 
   if (isLoading) {
     return <QuickLoadingModal message="Loading market research..." />;

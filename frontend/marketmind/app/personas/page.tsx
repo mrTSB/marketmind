@@ -146,12 +146,10 @@ export default function PersonasPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   const loadPersonas = async () => {
-    const memeContentId = "abc";
-
-    if (!memeContentId) return;
+    if (!contentId) return;
       
     try {
-      const response = await fetch(`/api/load-content?contentId=${memeContentId}&contentType=personas`);
+      const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=personas`);
       if (!response.ok) {
         throw new Error('Failed to load personas');
       }
@@ -166,7 +164,7 @@ export default function PersonasPage() {
 
   useEffect(() => {
     loadPersonas();
-  }, []);
+  }, [contentId]);
 
   const handleMessagesUpdate = (name: string, newMessages: Array<{ role: string; content: string }>) => {
     setPersonas(prevPersonas =>
