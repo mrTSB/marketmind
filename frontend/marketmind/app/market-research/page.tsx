@@ -22,8 +22,6 @@ export default function MarketResearchPage() {
 
   const loadMarketResearch = async () => {
     if (!contentId) return;
-
-    if (!contentId) return;
       
     try {
       const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=market-research`);

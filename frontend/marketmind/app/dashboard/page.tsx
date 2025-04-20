@@ -2,13 +2,18 @@
 
 import Link from 'next/link';
 import { Users, Search, Rocket, FileText, Megaphone, Plus } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { ContentIdContext } from "@/app/providers/content_id_provider";
 
 export default function DashboardPage() {
   const router = useRouter();
+  const ctx = useContext(ContentIdContext);
+  if (!ctx) throw new Error("ContentIdContext missing");
+  const { contentId, setContentId } = ctx;
 
   useEffect(() => {
     const contentId = localStorage.getItem('contentId');
@@ -17,38 +22,63 @@ export default function DashboardPage() {
     }
   }, [router]);
 
+  const [marketResearch, setMarketResearch] = useState<any>(null);
+  const loadMarketResearch = async () => {
+    if (!contentId) return;
+
+    if (!contentId) return;
+      
+    try {
+      const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=market-research`);
+      if (!response.ok) {
+        throw new Error('Failed to load market research');
+      }
+      const data = await response.json();
+      console.log(data.pain_points)
+      setMarketResearch(data);
+    } catch (error) {
+      console.error('Error loading market research:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadMarketResearch();
+  }, [contentId]);
+
+  console.log(marketResearch);
+
   const navigationItems = [
     {
-      title: 'Personas',
-      description: 'Define and manage your target audience personas',
+      title: 'Persona Studio',
+      description: 'Craft detailed buyer profiles and understand your ideal customers',
       icon: Users,
       href: '/personas',
       color: 'bg-blue-500/10 text-blue-500',
     },
     {
-      title: 'Market Research',
-      description: 'Analyze market trends and competitor insights',
+      title: 'Market Intelligence',
+      description: 'Uncover market opportunities and competitive advantages',
       icon: Search,
       href: '/market-research',
       color: 'bg-green-500/10 text-green-500',
     },
     {
-      title: 'Go-to-Market',
-      description: 'Plan and execute your GTM strategy',
+      title: 'Go-to-Market Architect',
+      description: 'Launch your product with a winning strategy',
       icon: Rocket,
       href: '/gtm',
       color: 'bg-purple-500/10 text-purple-500',
     },
     {
       title: 'Executive Brief',
-      description: 'Generate comprehensive executive reports',
+      description: 'Create compelling reports that drive decision-making',
       icon: FileText,
       href: '/executive-brief',
       color: 'bg-orange-500/10 text-orange-500',
     },
     {
-      title: 'Campaigns',
-      description: 'Create and manage marketing campaigns',
+      title: 'Campaign Lab',
+      description: 'Design and execute high-impact marketing campaigns',
       icon: Megaphone,
       href: '/campaigns',
       color: 'bg-red-500/10 text-red-500',
@@ -59,9 +89,9 @@ export default function DashboardPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8 flex justify-between items-start">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Welcome to MarketMind</h1>
+          <h1 className="text-4xl font-bold mb-2">Command Center</h1>
           <p className="text-muted-foreground text-lg">
-            Your all-in-one platform for market intelligence and strategy
+            {marketResearch?.title || "Your strategic hub for market intelligence"}
           </p>
         </div>
         <Button 
@@ -69,7 +99,7 @@ export default function DashboardPage() {
           className="flex items-center gap-2"
         >
           <Plus className="h-4 w-4" />
-          Generate New Campaign
+          Launch New Campaign
         </Button>
       </div>
 
@@ -97,6 +127,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Track your latest strategic moves</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">No recent activity to show</p>
@@ -106,6 +137,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>Quick Stats</CardTitle>
+            <CardDescription>Your strategic metrics at a glance</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
@@ -117,7 +149,7 @@ export default function DashboardPage() {
               </Card>
               <Card>
                 <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground">Campaigns</p>
+                  <p className="text-sm text-muted-foreground">Active Campaigns</p>
                   <p className="text-2xl font-bold">0</p>
                 </CardContent>
               </Card>
