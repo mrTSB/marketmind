@@ -129,6 +129,17 @@ async def generate_all(product_info: ProductInfo):
     
     return GenerationResponse(id=content_id, timestamp=timestamp)
 
+@app.post("/generate_detailed_campaign", response_model=DetailedCampaign)
+async def generate_detailed_campaign(product_info: str, campaign: Campaign):
+    """Generate detailed campaign based on product and company information"""
+    
+    # Generate content in parallel
+    content = await generate_detailed_campaign(
+        product_info.product_info, campaign
+    )
+    
+    return content
+
 @app.get("/content/{content_id}/campaigns", response_model=CampaignList)
 async def get_campaigns(content_id: str):
     """Get generated campaigns"""

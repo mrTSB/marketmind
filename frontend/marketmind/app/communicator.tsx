@@ -9,7 +9,6 @@ export interface ProductInfo {
 }
 
 export interface Campaign {
-  title: string;
   concept?: string;
   [key: string]: any;
 }
@@ -19,7 +18,6 @@ export interface CampaignsResponse {
 }
 
 export interface DetailedCampaign {
-  title: string;
   concept: string;
   [key: string]: any;
 }
@@ -113,6 +111,17 @@ export const getCampaigns = async (contentId: string): Promise<CampaignsResponse
 export const getDetailedCampaign = async (contentId: string): Promise<DetailedCampaign> => {
   try {
     const response = await axios.get(`${BASE_URL}/content/${contentId}/detailed-campaign`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching detailed campaign:', error);
+    throw error;
+  }
+};
+
+export const generateDetailedCampaign = async (productInfo: string, campaign: Campaign): Promise<DetailedCampaign> => {
+  console.log(productInfo, campaign);
+  try {
+    const response = await axios.post(`${BASE_URL}/generate_detailed_campaign`, { productInfo, campaign });
     return response.data;
   } catch (error) {
     console.error('Error fetching detailed campaign:', error);
