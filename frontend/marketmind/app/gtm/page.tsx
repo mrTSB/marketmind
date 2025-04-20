@@ -53,7 +53,11 @@ export default function GTMPlanPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   const loadGTMPlan = async () => {
-    if (!contentId) return;
+    if (!contentId) {
+      console.warn('No contentId provided, using default GTM plan');
+      setIsLoading(false);
+      return;
+    }
       
     try {
       const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=gtm-plan`);
@@ -61,10 +65,12 @@ export default function GTMPlanPage() {
         throw new Error('Failed to load gtm plan');
       }
       const data = await response.json();
-      console.log(data);
-      setGTMPlanData(data);
+      if (data) {
+        setGTMPlanData(data);
+      }
     } catch (error) {
       console.error('Error loading gtm plan:', error);
+      // Keep the default data if API fails
     } finally {
       setIsLoading(false);
     }
@@ -72,7 +78,7 @@ export default function GTMPlanPage() {
 
   useEffect(() => {
     loadGTMPlan();
-  }, []);
+  }, [contentId]); // Add contentId as dependency
 
   if (isLoading) {
     return <QuickLoadingModal message="Loading gtm plan..." />;

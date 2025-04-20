@@ -51,7 +51,11 @@ export default function ExecutiveBriefPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   const loadExecutiveBrief = async () => {
-    if (!contentId) return;
+    if (!contentId) {
+      console.warn('No contentId provided, using default executive brief');
+      setIsLoading(false);
+      return;
+    }
       
     try {
       const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=executive-brief`);
@@ -59,9 +63,12 @@ export default function ExecutiveBriefPage() {
         throw new Error('Failed to load executive brief');
       }
       const data = await response.json();
-      setExecutiveBriefData(data);
+      if (data) {
+        setExecutiveBriefData(data);
+      }
     } catch (error) {
       console.error('Error loading executive brief:', error);
+      // Keep the default data if API fails
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +76,7 @@ export default function ExecutiveBriefPage() {
 
   useEffect(() => {
     loadExecutiveBrief();
-  }, []);
+  }, [contentId]);
 
   if (isLoading) {
     return <QuickLoadingModal message="Loading executive brief..." />;
