@@ -8,6 +8,7 @@ from models.llms import llm_call_messages
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter
+from fastapi import HTTPException
 
 def segment_image_into_16_sections(base64_image):
     """
@@ -173,88 +174,126 @@ def evaluate_image(base64_image, description: str):
     return scores
 
 
-def plot_heatmap(scores, image_url=None):
+def plot_heatmap(scores, img_array: np.ndarray) -> str:
     """
     Creates a heatmap overlay on the original image.
     
     Args:
         scores (list): List of tuples containing (row, col, score)
-        image_url (str, optional): URL of the original image
+        img_array (np.ndarray): Numpy array of the image
     """
-    
-    
-    # Create a 4x4 grid of zeros
-    heatmap = np.zeros((4, 4))
-    
-    # Fill in the scores
-    for row, col, score in scores:
-        heatmap[row, col] = score
-    
-    # Normalize scores to 0-1 range
-    heatmap = (heatmap - np.min(heatmap)) / (np.max(heatmap) - np.min(heatmap))
-    
-    # Upscale the heatmap using interpolation
-    upscale_factor = 50  # This will make each cell 50x50 pixels
-    heatmap_upscaled = np.kron(heatmap, np.ones((upscale_factor, upscale_factor)))
-    
-    # Apply Gaussian blur for smoothing
-    heatmap_smooth = gaussian_filter(heatmap_upscaled, sigma=upscale_factor/2)
-    
-    # Create figure and axis
-    
-    response = requests.get(image_url)
-    image = Image.open(io.BytesIO(response.content))
-    plt.figure(figsize=(image.size[0]/100, image.size[1]/100), dpi=100)
+    try:
+        # Create a 4x4 grid of zeros
+        heatmap = np.zeros((4, 4))
+        
+        # Fill in the scores
+        for row, col, score in scores:
+            heatmap[row, col] = score
+        
+        # Normalize scores to 0-1 range
+        heatmap = (heatmap - np.min(heatmap)) / (np.max(heatmap) - np.min(heatmap))
+        
+        # Upscale the heatmap using interpolation
+        upscale_factor = 25  # Reduced from 50 to 25
+        heatmap_upscaled = np.kron(heatmap, np.ones((upscale_factor, upscale_factor)))
+        
+        # Apply Gaussian blur for smoothing
+        heatmap_smooth = gaussian_filter(heatmap_upscaled, sigma=upscale_factor/2)
+        
+        # Create figure and axis
+        plt.figure(figsize=(img_array.shape[1]/100, img_array.shape[0]/100), dpi=100)
 
-    # Plot the base image
-    plt.imshow(image, extent=[0, image.size[0], 0, image.size[1]])
+        # Plot the base image
+        plt.imshow(img_array)
 
-    # Plot heatmap overlay with matching dimensions and coordinates
-    plt.imshow(heatmap_smooth,
-            cmap='RdYlGn_r',
-            alpha=0.7,
-            interpolation='gaussian',
-            extent=[0, image.size[0], 0, image.size[1]])
+        # Plot heatmap overlay with matching dimensions and coordinates
+        plt.imshow(heatmap_smooth,
+                cmap='RdYlGn_r',
+                alpha=0.7,
+                interpolation='gaussian',
+                extent=[0, img_array.shape[1], 0, img_array.shape[0]])
+        
+        # Remove axes
+        plt.axis('off')
+        
+        # Remove padding
+        plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+        plt.tight_layout(pad=0)
 
-    # Remove axes
-    plt.axis('off')
+        # Save to bytes buffer
+        buf = io.BytesIO()
+        plt.savefig(buf, 
+                    format='png', 
+                    bbox_inches='tight', 
+                    pad_inches=0, 
+                    dpi=100)  # Reduced from 300 to 100
+        plt.close()
+        
+        # Convert to base64
+        buf.seek(0)
+        base64_heatmap = base64.b64encode(buf.getvalue()).decode('utf-8')
+        return base64_heatmap
+        
+    except Exception as e:
+        print(f"Error in plot_heatmap: {str(e)}")
+        print(f"Error type: {type(e)}")
+        import traceback
+        print(f"Traceback: {traceback.format_exc()}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to plot heatmap: {str(e)}"
+        )
 
-    # Remove padding
-    plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
-    plt.tight_layout(pad=0)
+def generate_heatmap(image_url: str, description: str) -> str:
+    try:
+        # Check if the input is already a base64 string
+        if image_url.startswith('data:image'):
+            # Extract the base64 part after the comma
+            base64_data = image_url.split(',')[1]
+            # Decode base64 to bytes
+            image_content = base64.b64decode(base64_data)
+        else:
+            # Fetch image from URL
+            response = requests.get(image_url)
+            response.raise_for_status()
+            image_content = response.content
 
-    # Save with exact dimensions
-    plt.savefig('heatmap_overlay.png',
-                bbox_inches='tight',
-                pad_inches=0,
-                dpi=300)
-    
-    # Convert the plot to base64
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0, dpi=300)
-    buf.seek(0)
-    plt.close()
-    
-    # Convert to base64
-    base64_heatmap = base64.b64encode(buf.getvalue()).decode('utf-8')
-    return base64_heatmap
+        # Convert to base64 for evaluate_image
+        base64_image = base64.b64encode(image_content).decode('utf-8')
+        
+        # Evaluate the image to get scores
+        scores = evaluate_image(base64_image, description)
+        
+        # Convert to PIL Image for plotting
+        image = Image.open(io.BytesIO(image_content))
+        
+        # Convert to RGB if necessary
+        if image.mode != 'RGB':
+            image = image.convert('RGB')
+            
+        # Resize image if too large
+        max_size = 1024
+        if max(image.size) > max_size:
+            ratio = max_size / max(image.size)
+            new_size = tuple(int(dim * ratio) for dim in image.size)
+            image = image.resize(new_size, Image.Resampling.LANCZOS)
 
-def generate_heatmap(image_url: str, description: str):
-    """
-    Generates a heatmap overlay on the original image.
-    
-    Args:
-        image_url (str): URL of the original image
-        description (str): Description of the focus group participant
-    Returns:
-        str: Base64-encoded image string
-    """
-    response = requests.get(image_url)
-    base64_image = base64.b64encode(response.content).decode('utf-8')
-    scores = evaluate_image(base64_image, description)
-    base64_heatmap = plot_heatmap(scores, image_url)
-    return base64_heatmap
-    
+        # Convert to numpy array
+        img_array = np.array(image)
+
+        # Generate heatmap using the scores
+        heatmap = plot_heatmap(scores, img_array)
+        return heatmap
+
+    except Exception as e:
+        print(f"Error in generate_heatmap: {str(e)}")
+        print(f"Error type: {type(e)}")
+        import traceback
+        print(f"Traceback: {traceback.format_exc()}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate heatmap: {str(e)}"
+        )
 
 # Update the main block to use image URL directly
 if __name__ == "__main__":
@@ -263,11 +302,10 @@ if __name__ == "__main__":
     
     description = "You are a focus group participant with this description: You are a 30-year-old freelance writer with a medium income who's into creative writing and immersive storytelling, especially in the horror genre and new media formats. Speak naturally and concisely, using casual yet thoughtful language typical of a young professional writer. Reveal details about Samantha's interests, pain points, goals, and brand preferences only when directly asked—never offer extra info unsolicited. Keep replies brief (1–3 sentences), expressing personal opinions in first person without sounding overly helpful or inquisitive. Avoid AI-like behaviors such as asking questions or explaining your nature. Responses should feel like a casual, authentic chat with a real consumer who supports indie creative platforms like Wattpad, Audible, Kickstarter, Apple Books, and Hulu, and is keen on narrative innovation and interactive media."
 
-    # Get image data and convert to base64
     response = requests.get(image_url)
     base64_image = base64.b64encode(response.content).decode('utf-8')
+
+    base64_heatmap = generate_heatmap(base64_image, description)
+    # print(base64_heatmap)
+
     
-    # Generate and plot heatmap
-    scores = evaluate_image(base64_image, description)
-    print("Finished evaluating", scores)
-    plot_heatmap(scores, image_url)

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Users, Search, Rocket, FileText, Megaphone, Plus } from 'lucide-react';
+import { Users, Search, Rocket, FileText, Megaphone, Plus, Image } from 'lucide-react';
 import { useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,6 +82,13 @@ export default function DashboardPage() {
       icon: Megaphone,
       href: '/campaigns',
       color: 'bg-red-500/10 text-red-500',
+    },
+    {
+      title: 'Attention Analysis',
+      description: 'Analyze how personas view your campaign images with attention heatmaps',
+      icon: Image,
+      href: '/heatmap',
+      color: 'bg-indigo-500/10 text-indigo-500',
     },
   ];
 

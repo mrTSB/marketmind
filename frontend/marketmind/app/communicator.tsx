@@ -89,6 +89,15 @@ export interface GroupChatRequest {
   initial_message: string;
 }
 
+export interface HeatmapRequest {
+  image_url: string;
+  description: string;
+}
+
+export interface HeatmapResponse {
+  base64_heatmap: string;
+}
+
 // API Functions
 export const generateContent = async (productInfo: ProductInfo): Promise<string> => {
   try {
@@ -248,6 +257,22 @@ export const groupChat = async (
     return response.data;
   } catch (error) {
     console.error('Error in group chat:', error);
+    throw error;
+  }
+};
+
+export const analyzeHeatmap = async (
+  imageUrl: string,
+  description: string
+): Promise<HeatmapResponse> => {
+  try {
+    const response = await axios.post(`${BASE_URL}/heatmap`, {
+      image_url: imageUrl,
+      description: description
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error analyzing heatmap:', error);
     throw error;
   }
 };
