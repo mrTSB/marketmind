@@ -317,7 +317,7 @@ def conduct_market_research(product_description: str, company_description: str) 
     
     # Generate a summary of the research
     summary_prompt = f"""
-    Based on the following market research data, create a comprehensive summary:
+    Create a brief market summary:
     
     Product: {product_description}
     Company: {company_description}
@@ -329,7 +329,7 @@ def conduct_market_research(product_description: str, company_description: str) 
     Pain Points: {pain_points.model_dump_json()}
     Influencers: {influencers.model_dump_json()}
     
-    Create a detailed summary that highlights key findings and insights.
+    Keep it under 3 sentences.
     """
     
     system_prompt = """You are a market research expert specializing in creating comprehensive research summaries.

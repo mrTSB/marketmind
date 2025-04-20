@@ -1,5 +1,9 @@
+"use client"
+
 import { Campaign } from "@/components/Campaign"
 import { CampaignList } from "@/components/CampaignList"
+import { QuickLoadingModal } from "@/components/QuickLoadingModal"
+import { useEffect, useState } from "react"
 
 // This would typically come from an API or database
 const mockCampaigns = [
@@ -46,11 +50,43 @@ const mockCampaigns = [
 ]
 
 export default function CampaignsPage() {
+  const [campaigns, setCampaigns] = useState(mockCampaigns)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const loadCampaigns = async () => {
+    const memeContentId = "abc";
+
+    if (!memeContentId) return;
+      
+    try {
+      const response = await fetch(`/api/load-content?contentId=${memeContentId}&contentType=campaigns`);
+      if (!response.ok) {
+        throw new Error('Failed to load campaigns');
+      }
+      const data = await response.json();
+      console.log(data.campaigns);
+      setCampaigns(data.campaigns);
+    } catch (error) {
+      console.error('Error loading campaigns:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCampaigns();
+  }, []);
+      
+  
+  if (isLoading) {
+    return <QuickLoadingModal message="Loading campaigns..." />;
+  }
+
   return (
     <main className="container py-8">
       <h1 className="text-3xl font-bold mb-8">Our Campaigns</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockCampaigns.map((campaign, index) => (
+        {campaigns.map((campaign, index) => (
           <Campaign key={index} campaign={campaign} />
         ))}
       </div>

@@ -1,8 +1,11 @@
+"use client"
+
 import { ExecutiveBrief } from "@/components/executive-brief/ExecutiveBrief"
+import { useEffect, useState } from "react";
 
 export default function ExecutiveBriefPage() {
   // This would typically come from an API or database
-  const executiveBriefData = {
+  const [executiveBriefData, setExecutiveBriefData] = useState({
     title: "MarketMind AI Platform Investment",
     executive_summary: "This executive brief outlines the opportunity to invest in MarketMind's AI-powered marketing platform, which has demonstrated strong market potential and competitive advantages. The platform offers predictive analytics and automation capabilities that address critical pain points for mid to large-sized enterprises.",
     business_opportunity: "MarketMind's AI platform targets a $5B market with 12.5% annual growth. The solution addresses the challenge enterprises face with fragmented marketing tools and complex data sets. Our platform simplifies predictive insights and automation at scale, offering a unique value proposition in the market.",
@@ -37,7 +40,28 @@ export default function ExecutiveBriefPage() {
       "Finalize investment terms and conditions",
       "Prepare board presentation for approval"
     ]
-  }
+  });
+
+  const loadExecutiveBrief = async () => {
+    const memeContentId = "abc";
+
+    if (!memeContentId) return;
+      
+    try {
+      const response = await fetch(`/api/load-content?contentId=${memeContentId}&contentType=executive-brief`);
+      if (!response.ok) {
+        throw new Error('Failed to load executive brief');
+      }
+      const data = await response.json();
+      setExecutiveBriefData(data);
+    } catch (error) {
+      console.error('Error loading executive brief:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadExecutiveBrief();
+  }, []);
 
   return (
     <div className="container mx-auto py-8 max-w-6xl">
