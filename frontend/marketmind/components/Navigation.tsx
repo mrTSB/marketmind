@@ -12,18 +12,27 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import { ContentIdContext } from "@/app/providers/content_id_provider";
+import { useContext } from 'react';
+
 const Navigation = () => {
   const pathname = usePathname();
+  const ctx = useContext(ContentIdContext);
+  if (!ctx) throw new Error("ContentIdContext missing");
+  const { contentId, setContentId } = ctx;
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Generate', path: '/generate' },
-    { name: 'Personas', path: '/personas' },
-    { name: 'Market Research', path: '/market-research' },
-    { name: 'Go To Market', path: '/gtm' },
-    { name: 'Executive Brief', path: '/executive-brief' },
-    { name: 'Campaigns', path: '/campaigns' },
+    // { name: 'Home', path: '/' },
+    { name: 'Generate', path: '/generate', alwaysVisible: true },
+    { name: 'Personas', path: '/personas', alwaysVisible: false },
+    { name: 'Market Research', path: '/market-research', alwaysVisible: false },
+    { name: 'Go To Market', path: '/gtm', alwaysVisible: false },
+    { name: 'Executive Brief', path: '/executive-brief', alwaysVisible: false },
+    { name: 'Campaigns', path: '/campaigns', alwaysVisible: false },
   ];
+
+  // console.log('Navigation: Rendering with contentId:', contentId);
+  // console.log('Navigation: Visible items:', navItems.filter(item => item.alwaysVisible || contentId !== null).map(item => item.name));
 
   return (
     <div className="border-b border-border">
