@@ -1,10 +1,15 @@
 "use client"
 
 import { ExecutiveBrief } from "@/components/executive-brief/ExecutiveBrief"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { QuickLoadingModal } from "@/components/QuickLoadingModal";
+import { ContentIdContext } from "../providers/content_id_provider";
 
 export default function ExecutiveBriefPage() {
+  const ctx = useContext(ContentIdContext);
+  if (!ctx) throw new Error("ContentIdContext missing");
+  const { contentId, setContentId } = ctx;
+
   // This would typically come from an API or database
   const [executiveBriefData, setExecutiveBriefData] = useState({
     title: "MarketMind AI Platform Investment",
@@ -46,19 +51,24 @@ export default function ExecutiveBriefPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   const loadExecutiveBrief = async () => {
-    const memeContentId = "abc";
-
-    if (!memeContentId) return;
+    if (!contentId) {
+      console.warn('No contentId provided, using default executive brief');
+      setIsLoading(false);
+      return;
+    }
       
     try {
-      const response = await fetch(`/api/load-content?contentId=${memeContentId}&contentType=executive-brief`);
+      const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=executive-brief`);
       if (!response.ok) {
         throw new Error('Failed to load executive brief');
       }
       const data = await response.json();
-      setExecutiveBriefData(data);
+      if (data) {
+        setExecutiveBriefData(data);
+      }
     } catch (error) {
       console.error('Error loading executive brief:', error);
+      // Keep the default data if API fails
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +76,7 @@ export default function ExecutiveBriefPage() {
 
   useEffect(() => {
     loadExecutiveBrief();
-  }, []);
+  }, [contentId]);
 
   if (isLoading) {
     return <QuickLoadingModal message="Loading executive brief..." />;

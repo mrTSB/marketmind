@@ -2,9 +2,14 @@
 
 import { GTMPlan } from "@/components/gtm/GTMPlan"
 import { QuickLoadingModal } from "@/components/QuickLoadingModal";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ContentIdContext } from "../providers/content_id_provider";
 
 export default function GTMPlanPage() {
+  const ctx = useContext(ContentIdContext);
+  if (!ctx) throw new Error("ContentIdContext missing");
+  const { contentId, setContentId } = ctx;
+
   // This would typically come from an API or database
   const [gtmPlanData, setGTMPlanData] = useState({
     "title": "FutureProof Marketing Campaign",
@@ -48,20 +53,24 @@ export default function GTMPlanPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   const loadGTMPlan = async () => {
-    const memeContentId = "abc";
-
-    if (!memeContentId) return;
+    if (!contentId) {
+      console.warn('No contentId provided, using default GTM plan');
+      setIsLoading(false);
+      return;
+    }
       
     try {
-      const response = await fetch(`/api/load-content?contentId=${memeContentId}&contentType=gtm-plan`);
+      const response = await fetch(`/api/load-content?contentId=${contentId}&contentType=gtm-plan`);
       if (!response.ok) {
         throw new Error('Failed to load gtm plan');
       }
       const data = await response.json();
-      console.log(data);
-      setGTMPlanData(data);
+      if (data) {
+        setGTMPlanData(data);
+      }
     } catch (error) {
       console.error('Error loading gtm plan:', error);
+      // Keep the default data if API fails
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +78,7 @@ export default function GTMPlanPage() {
 
   useEffect(() => {
     loadGTMPlan();
-  }, []);
+  }, [contentId]); // Add contentId as dependency
 
   if (isLoading) {
     return <QuickLoadingModal message="Loading gtm plan..." />;
