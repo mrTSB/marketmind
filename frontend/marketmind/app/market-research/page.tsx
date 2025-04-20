@@ -118,6 +118,8 @@ export default function MarketResearchPage() {
     loadPersonas();
   }, []);
 
+  console.log(marketResearch);
+
   return (
     <div className="container mx-auto py-8 space-y-8">
       <div className="flex justify-between items-center">
