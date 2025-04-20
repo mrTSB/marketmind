@@ -37,7 +37,7 @@ def generate_base_personas(campaign_description: str) -> BasePersonaList:
         BasePersonaList: List of generated base personas
     """
     persona_prompt = f"""
-    Based on the following ad campaign description, generate 3-5 detailed marketing personas.
+    Based on the following ad campaign description, generate 3-5 diverse and detailed marketing personas.
     Each persona should be unique and relevant to the campaign.
     
     Campaign Description:
@@ -60,7 +60,11 @@ def generate_base_personas(campaign_description: str) -> BasePersonaList:
     
     persona_system_prompt = """You are a marketing expert specializing in creating detailed customer personas.
     Generate realistic and specific personas that would be relevant to the given campaign.
-    Ensure each persona has distinct characteristics and behaviors."""
+    Ensure each persona has distinct characteristics and behaviors.
+
+    Make all the personas unique and realistic.
+    
+    """
     
     return llm_call(
         prompt=persona_prompt,

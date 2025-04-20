@@ -11,91 +11,13 @@ import { ArrowUpRight, TrendingUp, Users, Target, AlertTriangle, Scale, FileText
 import { ContentIdContext } from "../providers/content_id_provider"
 import { useContext, useEffect, useState } from "react"
 import { QuickLoadingModal } from "@/components/QuickLoadingModal"
-
-// Sample data - in a real app, this would come from an API or database
-const marketData = {
-  title: "Consumer Health and Wellness App Market",
-  summary: "The market research indicates a rapidly growing sector with significant opportunities for innovation. Key trends include digital transformation and sustainability, while regulatory compliance remains a critical consideration. The competitive landscape shows both established players and emerging startups, creating a dynamic market environment.",
-  marketSize: {
-    total_market_value: 5000000000,
-    unit: "USD",
-    year: 2023,
-    growth_rate: 12.5,
-    projected_value: 8000000000,
-    projection_year: 2025
-  },
-  demographics: {
-    age_groups: ["18-24", "25-34", "35-44", "45-54", "55+"],
-    income_levels: ["$30k-$50k", "$50k-$75k", "$75k-$100k", "$100k+"],
-    geographic_regions: ["North America", "Europe", "Asia Pacific", "Latin America"],
-    education_levels: ["High School", "Bachelor's", "Master's", "PhD"],
-    key_psychographics: ["Tech-savvy", "Health-conscious", "Environmentally aware", "Value-driven"]
-  },
-  trends: {
-    current_trends: ["Remote work", "Digital transformation", "Sustainability", "AI integration"],
-    emerging_trends: ["Web3", "Metaverse", "Quantum computing", "Green tech"],
-    declining_trends: ["Traditional retail", "Fossil fuels", "Manual processes"],
-    technology_impact: ["Cloud computing", "5G networks", "IoT", "Blockchain"],
-    social_impact: ["Work-life balance", "Mental health awareness", "Social responsibility"]
-  },
-  competitors: [
-    {
-      name: "TechCorp Solutions",
-      description: "Leading provider of enterprise software solutions",
-      market_share: 35,
-      strengths: ["Strong brand", "Large customer base", "Innovative R&D"],
-      weaknesses: ["High pricing", "Complex UI", "Limited customization"],
-      pricing_strategy: "Premium pricing with enterprise licensing",
-      target_audience: "Large enterprises",
-      status: "active"
-    },
-    {
-      name: "StartupX",
-      description: "Agile startup disrupting the market",
-      market_share: 5,
-      strengths: ["Innovative approach", "Agile development", "Competitive pricing"],
-      weaknesses: ["Limited resources", "Small team", "Unproven track record"],
-      pricing_strategy: "Freemium model with premium features",
-      target_audience: "SMBs and startups",
-      status: "active"
-    }
-  ],
-  painPoints: {
-    pain_points: [
-      {
-        description: "Complex integration with existing systems",
-        severity: "high" as const,
-        impact: "Significant delays in implementation and increased costs",
-        affected_users: ["IT teams", "System administrators", "End users"],
-        potential_solutions: ["API-first approach", "Pre-built connectors", "Simplified integration"]
-      },
-      {
-        description: "Limited customization options",
-        severity: "medium" as const,
-        impact: "Reduced user satisfaction and adoption rates",
-        affected_users: ["Business users", "Administrators"],
-        potential_solutions: ["Customizable dashboards", "White-label solutions", "Extensible architecture"]
-      }
-    ],
-    market_impact: "High impact on enterprise adoption and market penetration",
-    opportunity_size: "$2.5B in potential revenue by 2025",
-    priority_level: "high" as const
-  },
-  regulatory: {
-    current_regulations: ["GDPR", "CCPA", "SOC 2"],
-    pending_regulations: ["AI Ethics Framework", "Data Localization Laws"],
-    compliance_requirements: ["Data encryption", "Access controls", "Audit trails"],
-    regulatory_bodies: ["EU Commission", "FTC", "SEC"],
-    potential_risks: ["Data privacy violations", "Non-compliance penalties", "Reputation damage"]
-  }
-}
-
+import { Skeleton } from "@/components/ui/skeleton"
 export default function MarketResearchPage() {
   const ctx = useContext(ContentIdContext);
   if (!ctx) throw new Error("ContentIdContext missing");
   const { contentId, setContentId } = ctx;
 
-  const [marketResearch, setMarketResearch] = useState(marketData)
+  const [marketResearch, setMarketResearch] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const loadMarketResearch = async () => {
@@ -124,8 +46,52 @@ export default function MarketResearchPage() {
 
   console.log(marketResearch);
 
-  if (isLoading) {
-    return <QuickLoadingModal message="Loading market research..." />;
+  if (!marketResearch) {
+    return (
+      <div className="container mx-auto py-8 space-y-8">
+        <div className="flex justify-between items-center">
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+
+        <Skeleton className="h-6 w-full" />
+
+        <div className="grid grid-cols-1 gap-8">
+          {/* Market Overview Section */}
+          <section>
+            <Skeleton className="h-6 w-48 mb-4" />
+            <Skeleton className="h-[200px] w-full" />
+          </section>
+          
+          {/* Market Analysis Section */}
+          <section>
+            <Skeleton className="h-6 w-48 mb-4" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Skeleton className="h-[300px] w-full" />
+              <Skeleton className="h-[300px] w-full" />
+            </div>
+          </section>
+          
+          {/* Competitive Analysis Section */}
+          <section>
+            <Skeleton className="h-6 w-48 mb-4" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Skeleton className="h-[400px] w-full" />
+              <Skeleton className="h-[400px] w-full" />
+            </div>
+          </section>
+          
+          {/* Market Challenges Section */}
+          <section>
+            <Skeleton className="h-6 w-48 mb-4" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Skeleton className="h-[300px] w-full" />
+              <Skeleton className="h-[300px] w-full" />
+            </div>
+          </section>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -145,7 +111,7 @@ export default function MarketResearchPage() {
         {/* Market Overview Section */}
         <section>
           <h2 className="text-2xl font-semibold mb-4">Market Overview</h2>
-          <MarketSize {...marketResearch.marketSize} />
+          <MarketSize {...marketResearch.market_size} />
         </section>
         
         {/* Market Analysis Section */}
@@ -189,4 +155,3 @@ export default function MarketResearchPage() {
       </div>
     </div>
   )
-} 

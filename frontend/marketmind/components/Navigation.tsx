@@ -21,8 +21,8 @@ const Navigation = () => {
   const { contentId, setContentId } = ctx;
 
   const navItems = [
-    // { name: 'Home', path: '/' },
-    { name: 'Generate', path: '/generate', alwaysVisible: true },
+    { name: 'Home', path: '/dashboard', alwaysVisible: true },
+    { name: 'Generate', path: '/generate', alwaysVisible: false },
     { name: 'Personas', path: '/personas', alwaysVisible: false },
     { name: 'Market Research', path: '/market-research', alwaysVisible: false },
     { name: 'Go To Market', path: '/gtm', alwaysVisible: false },

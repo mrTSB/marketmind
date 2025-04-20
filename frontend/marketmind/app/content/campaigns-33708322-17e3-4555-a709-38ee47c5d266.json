@@ -1,0 +1,44 @@
+{
+  "campaigns": [
+    {
+      "name": "BuildSmart Revolution",
+      "slogan": "Smarter Tools for Stronger Builds",
+      "concept": "Showcase how the AI assistant seamlessly integrates into daily construction tasks, improving accuracy, safety, and efficiency, transforming traditional building into a high-tech craft.",
+      "target_audience": "Construction workers, site supervisors, and project managers in the construction industry",
+      "key_message": "Our AI assistant empowers construction professionals to work smarter, safer, and faster with cutting-edge technology.",
+      "image_url": "https://v3.fal.media/files/elephant/q5drRPCAow-nO1L4nZGYU.png"
+    },
+    {
+      "name": "Your Digital Foreman",
+      "slogan": "Intelligence on Site, Every Step of the Way",
+      "concept": "Position the AI assistant as a virtual foreman that supports workers in decision-making, project tracking, and problem-solving, reducing errors and enhancing teamwork.",
+      "target_audience": "Construction crews and foremen seeking tech-driven management support",
+      "key_message": "Get real-time assistance and expert guidance on the job with your AI digital foreman.",
+      "image_url": "https://v3.fal.media/files/penguin/p2OLNnuzFIPz0lVWH-pnn.png"
+    },
+    {
+      "name": "Safety First AI",
+      "slogan": "Protecting Lives One Smart Alert at a Time",
+      "concept": "Highlight the AI assistant’s advanced safety features, such as hazard detection and compliance reminders, emphasizing its role in preventing accidents and protecting workers.",
+      "target_audience": "Construction safety officers and workers committed to workplace safety",
+      "key_message": "Prioritize safety on the construction site with AI that watches out for you.",
+      "image_url": "https://v3.fal.media/files/kangaroo/qgQO-ziZEwAirdd7mgs4_.png"
+    },
+    {
+      "name": "Blueprint to Reality",
+      "slogan": "Turning Plans into Precision with AI",
+      "concept": "Demonstrate how the AI assistant helps translate complex blueprints into precise actions on the ground, minimizing costly mistakes and streamlining workflows.",
+      "target_audience": "Architects, engineers, and construction teams focused on accuracy and quality",
+      "key_message": "From blueprint to build, AI drives precision and productivity.",
+      "image_url": "https://v3.fal.media/files/lion/2OwwmyrGUPxYuaYlJV9tE.png"
+    },
+    {
+      "name": "Heavy Lifting, Light Thinking",
+      "slogan": "Let AI Handle the Details, You Build the Future",
+      "concept": "Emphasize how the AI assistant reduces mental strain by automating routine calculations, inventory checks, and progress reports, letting workers focus on their craft.",
+      "target_audience": "Busy construction workers and project leads juggling multiple tasks",
+      "key_message": "Simplify your workload with AI that manages the details so you can focus on building.",
+      "image_url": "https://v3.fal.media/files/lion/zTFb5TLzAVSnPfr1Ga2kD.png"
+    }
+  ]
+}

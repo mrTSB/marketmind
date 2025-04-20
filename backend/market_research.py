@@ -1,6 +1,9 @@
+from models.agents import Agent
+from models.tool_registry import tool_registry
+from models.llms import llm_call
 from pydantic import BaseModel
 from typing import List, Optional
-from models.llms import llm_call
+
 
 class Competitor(BaseModel):
     name: str
@@ -70,6 +73,8 @@ class MarketResearch(BaseModel):
     influencers: MarketInfluencers
     summary: str
 
+
+
 def research_competitors(product_description: str, company_description: str) -> List[Competitor]:
     prompt = f"""
     Based on the following product and company descriptions, identify and analyze key competitors (both current and past).
@@ -130,13 +135,38 @@ def research_market_size(product_description: str) -> MarketSize:
     system_prompt = """You are a market research expert specializing in market sizing and growth analysis.
     Provide accurate market size data and realistic growth projections.
     Ensure all required fields are filled with meaningful data.
-    Use current year for the market value and project 5 years into the future for projections."""
+    Use current year for the market value and project 5 years into the future for projections.
+
+    You have access to the Web Search tool, which can be used to search the web for market size data and growth projections.
     
-    return llm_call(
-        prompt=prompt,
+    """
+
+    search_agent = Agent(
+        name="Market Research",
         system_prompt=system_prompt,
+        description="A market research agent that can search the web for market size data and growth projections.",
+        tools=[tool_registry.get_tool("web_search")]
+    )
+    
+    agent_response = search_agent.call_with_tools(prompt)
+
+    json_parser_prompt = f"""
+    Parse the following response into a MarketSize object with the following structure:
+    - total_market_value: The current total market value in the specified unit
+    - unit: The currency unit (e.g., "USD", "EUR")
+    - year: The current year for the market value
+    - growth_rate: The annual growth rate as a percentage
+    - projected_value: The projected market value in the specified unit
+    - projection_year: The year for the projected value
+    
+    {agent_response} 
+    """
+
+    return llm_call(
+        prompt=json_parser_prompt,
         response_format=MarketSize
     )
+        
 
 def research_demographics(product_description: str) -> MarketDemographics:
     prompt = f"""
@@ -188,9 +218,28 @@ def research_regulatory_environment(product_description: str) -> RegulatoryEnvir
     Ensure all lists contain specific, actionable information.
     Include both general and product-specific regulations where applicable."""
     
-    return llm_call(
-        prompt=prompt,
+    search_agent = Agent(
+        name="Market Research",
         system_prompt=system_prompt,
+        description="A market research agent that can search the web for market size data and growth projections.",
+        tools=[tool_registry.get_tool("web_search")]
+    )
+
+    agent_response = search_agent.call_with_tools(prompt)
+
+    json_parser_prompt = f"""
+    Parse the following response into a RegulatoryEnvironment object with the following structure:
+    - current_regulations: List of current regulations affecting the product
+    - pending_regulations: List of pending or proposed regulations
+    - compliance_requirements: List of specific compliance requirements
+    - regulatory_bodies: List of relevant regulatory bodies
+    - potential_risks: List of potential regulatory risks
+    
+    {agent_response} 
+    """
+
+    return llm_call(
+        prompt=json_parser_prompt,
         response_format=RegulatoryEnvironment
     )
 
@@ -214,11 +263,31 @@ def research_trends(product_description: str) -> MarketTrends:
     system_prompt = """You are a market research expert specializing in trend analysis.
     Provide comprehensive information about market trends and their implications.
     Ensure all lists contain specific, actionable trends.
-    Include both short-term and long-term trends where applicable."""
+    Include both short-term and long-term trends where applicable
     
-    return llm_call(
-        prompt=prompt,
+    """
+    search_agent = Agent(
+        name="Market Research",
         system_prompt=system_prompt,
+        description="A market research agent that can search the web for market size data and growth projections.",
+        tools=[tool_registry.get_tool("web_search")]
+    )
+    
+    agent_response = search_agent.call_with_tools(prompt)
+
+    json_parser_prompt = f"""
+    Parse the following response into a MarketTrends object with the following structure. Each trend should be a string of max 80 characters:
+    - current_trends: List of current market trends
+    - emerging_trends: List of emerging or upcoming trends
+    - declining_trends: List of declining or outdated trends
+    - technology_impact: List of technology-related impacts on the market
+    - social_impact: List of social and cultural impacts on the market
+    
+    {agent_response} 
+    """
+
+    return llm_call(
+        prompt=json_parser_prompt,
         response_format=MarketTrends
     )
 
@@ -291,12 +360,14 @@ def conduct_market_research(product_description: str, company_description: str) 
     """
     # Generate a title based on the product description
     title_prompt = f"""
-    Based on the following product description, create a concise and descriptive title for the market research:
+    Based on the following product description, create a concise and descriptive title for the market being researched:
     
     Product Description:
     {product_description}
     
     Create a title that captures the essence of the market being researched.
+
+    DO NOT SAY "Market Research" or "Market Research Report" or anything similar.
     """
     
     system_prompt = """You are a market research expert specializing in creating clear and descriptive titles.

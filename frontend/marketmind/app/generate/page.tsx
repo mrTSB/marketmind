@@ -7,12 +7,12 @@ import { Button } from "@/components/ui/button";
 import { generateContent, getCampaigns, getMarketResearch, getPersonas, getExecutiveBrief, getGTMPlan } from '@/app/communicator';
 import { LoadingModal } from '@/components/LoadingModal';
 import { ContentIdContext } from "@/app/providers/content_id_provider";
-
+import { useRouter } from 'next/navigation';
 export default function GeneratePage() {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
-
+  const router = useRouter();
   const ctx = useContext(ContentIdContext);
   if (!ctx) throw new Error("ContentIdContext missing");
   const { contentId, setContentId } = ctx;
@@ -40,17 +40,16 @@ export default function GeneratePage() {
     setLoadingMessage('Preparing your request...');
 
     try {
-      setLoadingMessage('Analyzing your product information...');
+      setLoadingMessage('Generating content...');
       const productInfo = {
         product_info: query,
         company_info: "The company information should be in Product Info"
       };
       
-      setLoadingMessage('Generating content...');
       const newContentId = await generateContent(productInfo);
+      setContentId(newContentId);
 
       // Clear existing content first
-      setLoadingMessage('Clearing existing content...');
       const clearResponse = await fetch('/api/clear-content', {
         method: 'POST',
       });
@@ -59,10 +58,6 @@ export default function GeneratePage() {
         throw new Error('Failed to clear existing content');
       }
       
-      setLoadingMessage('Saving your content...');
-      setContentId(newContentId);
-      
-      setLoadingMessage('Loading Campaigns...');
       const campaigns = await getCampaigns(newContentId);
       console.log(campaigns);
       
@@ -84,7 +79,6 @@ export default function GeneratePage() {
         console.error('Failed to save campaigns');
       }
       
-      setLoadingMessage('Loading Personas...');
       const personas = await getPersonas(newContentId);
       console.log(personas);
       
@@ -106,7 +100,6 @@ export default function GeneratePage() {
         console.error('Failed to save personas');
       }
       
-      setLoadingMessage('Loading Market Research...');
       const marketResearch = await getMarketResearch(newContentId);
       console.log(marketResearch);
       
@@ -128,7 +121,6 @@ export default function GeneratePage() {
         console.error('Failed to save market research');
       }
       
-      setLoadingMessage('Loading Executive Brief...');
       const executiveBrief = await getExecutiveBrief(newContentId);
       console.log(executiveBrief);
       
@@ -150,7 +142,6 @@ export default function GeneratePage() {
         console.error('Failed to save executive brief');
       }
       
-      setLoadingMessage('Loading GTM Plan...');
       const gtmPlan = await getGTMPlan(newContentId);
       console.log(gtmPlan);
       
@@ -171,18 +162,12 @@ export default function GeneratePage() {
       if (!gtmPlanResponse.ok) {
         console.error('Failed to save GTM plan');
       }
-      
-      setLoadingMessage('Content generated successfully!');
-      // Small delay to show success message
-      await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (error) {
       console.error('Error generating content:', error);
-      setLoadingMessage('An error occurred. Please try again.');
-      // Small delay to show error message
-      await new Promise(resolve => setTimeout(resolve, 2000));
     } finally {
       setIsLoading(false);
       setLoadingMessage('');
+      router.push('/dashboard');
     }
   };
 
