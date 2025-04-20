@@ -105,7 +105,7 @@ const ReviewCard = ({
 
 const integrations = [
   "hubspot.svg",
-  "salesforce.svg",
+  "snapchat.svg",
   "slack.svg",
   "notion.svg",
   "google.svg",
