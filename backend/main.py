@@ -1,3 +1,4 @@
+from heatmap import generate_heatmap
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -6,6 +7,8 @@ import uvicorn
 import uuid
 from datetime import datetime
 import asyncio
+
+import random
 
 from make_campaigns import Campaign, CampaignList, DetailedCampaign, generate_campaign_ideas, generate_detailed_campaign
 from generate_gtm import GTMPlan, generate_gtm_plan
@@ -20,7 +23,7 @@ app = FastAPI(title="MarketMind API", description="API for marketing campaign ge
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000"],  # Explicitly allow frontend origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -129,6 +132,17 @@ async def generate_all(product_info: ProductInfo):
     
     return GenerationResponse(id=content_id, timestamp=timestamp)
 
+@app.post("/generate_detailed_campaign", response_model=DetailedCampaign)
+async def generate_detailed_campaign(product_info: str, campaign: Campaign):
+    """Generate detailed campaign based on product and company information"""
+    
+    # Generate content in parallel
+    content = await generate_detailed_campaign(
+        product_info.product_info, campaign
+    )
+    
+    return content
+
 @app.get("/content/{content_id}/campaigns", response_model=CampaignList)
 async def get_campaigns(content_id: str):
     """Get generated campaigns"""
@@ -223,13 +237,16 @@ async def group_chat(chat_request: GroupChatRequest):
     if not personas:
         raise HTTPException(status_code=404, detail="No personas found for this content")
     
+    # Randomize the order of personas
+    random.shuffle(personas)
     responses = []
+    saved_messages = []
     for persona in personas:
         # Prepare messages for the LLM
         messages = [
             {"role": "system", "content": persona["chat_system_prompt"]},
             {"role": "user", "content": chat_request.initial_message}
-        ]
+        ] + saved_messages
         
         # Get response from LLM
         response = await llm_call_messages_async(messages, model="google/gemini-2.5-flash-preview")
@@ -238,8 +255,23 @@ async def group_chat(chat_request: GroupChatRequest):
             persona_name=persona["name"],
             response=response
         ))
+        saved_messages.append({"role": "user", "content": "Response from " + persona["name"] + ": " + response})
     
     return GroupChatResponse(responses=responses)
+
+class HeatmapRequest(BaseModel):
+    image_url: str
+    description: str
+
+class HeatmapResponse(BaseModel):
+    base64_heatmap: str
+
+@app.post("/heatmap", response_model=HeatmapResponse)
+async def heatmap(heatmap_request: HeatmapRequest):
+    """Generate a heatmap for a given image and description"""
+    base64_heatmap = generate_heatmap(heatmap_request.image_url, heatmap_request.description)
+    return HeatmapResponse(base64_heatmap=base64_heatmap)   
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

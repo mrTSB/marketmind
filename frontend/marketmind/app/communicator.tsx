@@ -9,7 +9,6 @@ export interface ProductInfo {
 }
 
 export interface Campaign {
-  title: string;
   concept?: string;
   [key: string]: any;
 }
@@ -19,7 +18,6 @@ export interface CampaignsResponse {
 }
 
 export interface DetailedCampaign {
-  title: string;
   concept: string;
   [key: string]: any;
 }
@@ -89,6 +87,15 @@ export interface GroupChatRequest {
   initial_message: string;
 }
 
+export interface HeatmapRequest {
+  image_url: string;
+  description: string;
+}
+
+export interface HeatmapResponse {
+  base64_heatmap: string;
+}
+
 // API Functions
 export const generateContent = async (productInfo: ProductInfo): Promise<string> => {
   try {
@@ -113,6 +120,17 @@ export const getCampaigns = async (contentId: string): Promise<CampaignsResponse
 export const getDetailedCampaign = async (contentId: string): Promise<DetailedCampaign> => {
   try {
     const response = await axios.get(`${BASE_URL}/content/${contentId}/detailed-campaign`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching detailed campaign:', error);
+    throw error;
+  }
+};
+
+export const generateDetailedCampaign = async (productInfo: string, campaign: Campaign): Promise<DetailedCampaign> => {
+  console.log(productInfo, campaign);
+  try {
+    const response = await axios.post(`${BASE_URL}/generate_detailed_campaign`, { productInfo, campaign });
     return response.data;
   } catch (error) {
     console.error('Error fetching detailed campaign:', error);
@@ -248,6 +266,22 @@ export const groupChat = async (
     return response.data;
   } catch (error) {
     console.error('Error in group chat:', error);
+    throw error;
+  }
+};
+
+export const analyzeHeatmap = async (
+  imageUrl: string,
+  description: string
+): Promise<HeatmapResponse> => {
+  try {
+    const response = await axios.post(`${BASE_URL}/heatmap`, {
+      image_url: imageUrl,
+      description: description
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error analyzing heatmap:', error);
     throw error;
   }
 };

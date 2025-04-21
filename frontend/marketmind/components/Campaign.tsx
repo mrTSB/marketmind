@@ -21,16 +21,16 @@ interface CampaignProps {
 export function Campaign({ campaign }: CampaignProps) {
   const [showDetailed, setShowDetailed] = useState(false)
 
-  // Sample detailed campaign data
+  // Generate detailed campaign data based on basic campaign info
   const detailedCampaign = {
     ...campaign,
     campaign_objectives: [
-      "Increase brand awareness by 25%",
-      "Drive 10,000 new user signups",
-      "Achieve 15% conversion rate"
+      `Increase brand awareness for ${campaign.name} by 25%`,
+      `Drive 10,000 new user signups from ${campaign.target_audience}`,
+      `Achieve 15% conversion rate through ${campaign.key_message} messaging`
     ],
-    brand_positioning: "Premium, innovative, and user-friendly solution for modern businesses",
-    creative_strategy: "Focus on emotional storytelling and user testimonials",
+    brand_positioning: `Premium, innovative, and user-friendly solution for ${campaign.target_audience}`,
+    creative_strategy: `Focus on ${campaign.concept} through emotional storytelling and user testimonials`,
     media_channels: ["Social Media", "Content Marketing", "Email Campaigns", "Influencer Partnerships"],
     budget_allocation: "$50,000 total - 40% Social Media, 30% Content, 20% Email, 10% Influencer",
     timeline: "Q2 2024 - 3 months campaign duration",
@@ -40,8 +40,8 @@ export function Campaign({ campaign }: CampaignProps) {
       "Conversion Rate",
       "Customer Acquisition Cost"
     ],
-    competitive_analysis: "Leading competitor has 35% market share, focusing on enterprise clients",
-    risk_assessment: "Market saturation and changing consumer preferences pose potential risks",
+    competitive_analysis: `Leading competitor has 35% market share, focusing on ${campaign.target_audience}`,
+    risk_assessment: `Market saturation and changing consumer preferences in ${campaign.target_audience} segment pose potential risks`,
     success_metrics: [
       "20% increase in brand mentions",
       "15% growth in organic traffic",
