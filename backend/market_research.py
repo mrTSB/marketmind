@@ -148,7 +148,7 @@ def research_market_size(product_description: str) -> MarketSize:
         tools=[tool_registry.get_tool("web_search")]
     )
     
-    agent_response = search_agent.call_with_tools(prompt)
+    agent_response = search_agent.call(prompt)
 
     json_parser_prompt = f"""
     Parse the following response into a MarketSize object with the following structure:
@@ -225,7 +225,7 @@ def research_regulatory_environment(product_description: str) -> RegulatoryEnvir
         tools=[tool_registry.get_tool("web_search")]
     )
 
-    agent_response = search_agent.call_with_tools(prompt)
+    agent_response = search_agent.call(prompt)
 
     json_parser_prompt = f"""
     Parse the following response into a RegulatoryEnvironment object with the following structure:
@@ -273,7 +273,7 @@ def research_trends(product_description: str) -> MarketTrends:
         tools=[tool_registry.get_tool("web_search")]
     )
     
-    agent_response = search_agent.call_with_tools(prompt)
+    agent_response = search_agent.call(prompt)
 
     json_parser_prompt = f"""
     Parse the following response into a MarketTrends object with the following structure. Each trend should be a string of max 80 characters:

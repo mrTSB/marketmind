@@ -1,0 +1,44 @@
+{
+  "campaigns": [
+    {
+      "name": "RiskRadar",
+      "slogan": "See the Risks Before They See You",
+      "concept": "An interactive campaign showcasing how our platform pinpoints rental risks with precision. Users can visualize risk hotspots and understand analytics through intuitive dashboards, emphasizing proactive management.",
+      "target_audience": "Multifamily property managers and real estate risk analysts",
+      "key_message": "Our platform equips you with precise risk insights so you can make confident, data-driven underwriting decisions.",
+      "image_url": "https://v3.fal.media/files/elephant/BsgheEn3L0cF3BiDhOFyL.png"
+    },
+    {
+      "name": "SafeNest Initiative",
+      "slogan": "Building Security Into Every Lease",
+      "concept": "Highlight stories of property owners who improved their rental underwriting outcomes using data. The campaign focuses on community safety and long-term asset protection achieved through our analytics.",
+      "target_audience": "Multifamily real estate investors and underwriting teams",
+      "key_message": "Integrate cutting-edge analytics to create safer, more profitable rental portfolios.",
+      "image_url": "https://v3.fal.media/files/elephant/o1zsljHmIgTRcFggS5MtT.png"
+    },
+    {
+      "name": "SmartLease Insights",
+      "slogan": "Smarter Data. Safer Rentals.",
+      "concept": "A digital-first campaign featuring webinars, infographics, and whitepapers demonstrating how advanced analytics transform risk underwriting in multifamily rentals.",
+      "target_audience": "Underwriting professionals and real estate tech adopters",
+      "key_message": "Leverage intelligent analytics to enhance underwriting accuracy and reduce rental risks.",
+      "image_url": "https://v3.fal.media/files/zebra/SSVROTknC5mrt-JA4Madb.png"
+    },
+    {
+      "name": "FutureProof Rentals",
+      "slogan": "Anticipate. Analyze. Underwrite with Confidence.",
+      "concept": "A futuristic visual campaign showing how predictive analytics future-proof underwriting decisions, helping businesses stay ahead of market uncertainties in multifamily rentals.",
+      "target_audience": "Senior executives and risk management teams in multifamily real estate",
+      "key_message": "Predict and mitigate rental risks before they happen with our advanced underwriting analytics platform.",
+      "image_url": "https://v3.fal.media/files/lion/A4z2D8adNgzREGHlXGoqh.png"
+    },
+    {
+      "name": "DataDriven Dwellings",
+      "slogan": "Where Analytics Meets Affordability",
+      "concept": "Emphasize balancing risk and affordability by using data insights to optimize rental underwriting, benefiting property managers and tenants alike.",
+      "target_audience": "Multifamily property managers focused on optimizing occupancy and risk",
+      "key_message": "Achieve optimal underwriting balance—minimize risk while offering affordable living through data-powered analytics.",
+      "image_url": "https://v3.fal.media/files/monkey/lezc5GG9nNyhlHUC5EbxN.png"
+    }
+  ]
+}
