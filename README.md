@@ -1,3 +1,3 @@
 # marketmind
 
-We are using uv for packages not pip
+Won best overall prize at CMU's AI Valley Hackathon.
