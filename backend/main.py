@@ -79,7 +79,7 @@ async def generate_parallel(product_info: str, company_info: str):
     market_research, campaigns = await asyncio.gather(market_research_task, campaigns_task)
     
     # Generate detailed campaign (needs campaigns result)
-    detailed_campaign = generate_detailed_campaign(campaigns.campaigns[0], product_info, company_info)
+    detailed_campaign = generate_detailed_campaign(product_info, campaigns.campaigns[0])
     
     # Second level of parallelization
     gtm_plan_task = asyncio.to_thread(generate_gtm_plan, detailed_campaign)
